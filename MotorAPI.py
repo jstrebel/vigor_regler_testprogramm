@@ -36,7 +36,7 @@ def get_state():
 
 def get_endstops():
     status = get_status()
-    endstops = [status & 0b1, status & 0b10, status & 0b100, status & 0b1000]
+    endstops = [bool(status & 0b1), bool(status & 0b10), bool(status & 0b100), bool(status & 0b1000)]
     return endstops
 
 def get_pos():
