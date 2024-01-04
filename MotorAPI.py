@@ -28,11 +28,16 @@ def get_status():
     return read_i2c(addr, reg_status)
 
 def get_state():
-    status = read_i2c(addr, reg_status)
+    status = get_status()
     state = (status & 0x00F0)>>4
     if state > 4:
         state = 4
     return state
+
+def get_endstops():
+    status = get_status()
+    endstops = [status & 0b1, status & 0b10, status & 0b100, status & 0b1000]
+    return endstops
 
 def get_pos():
     pos_l = read_i2c(addr, reg_pos_l)

@@ -18,7 +18,11 @@ class SliderApp(QMainWindow):
 
         self.text_overall = QLabel("Gesamtübersicht:\n" + \
                                    "Status:\t0b0000000000000000\n" + \
-                                    "Controllerstate:\t0")
+                                    "Controllerstate:\t0" + \
+                                    "Endanschlag links vorne:\tfalse" + \
+                                    "Endanschlag links hinten:\tfalse" + \
+                                    "Endanschlag rechts vorne:\tfalse" + \
+                                    "Endanschlag rechts hinten:\tfalse")
 
         self.reset_err = QPushButton("Fehler zurücksetzen")
         self.reset_err.pressed.connect(self.reset_errors)
@@ -76,9 +80,14 @@ class SliderApp(QMainWindow):
                                 f"Anschlag:\t\t{a[1]}\n")
         state = MotorAPI.get_state()
         status = MotorAPI.get_status()
+        endstops = MotorAPI.get_endstops()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{bin(status)}\n" + \
-                                  f"Controllerstate:\t{state}")
+                                  f"Controllerstate:\t{state}" + \
+                                  f"Endanschlag links vorne:\t{endstops[0]}" + \
+                                  f"Endanschlag links hinten:\t{endstops[1]}" + \
+                                  f"Endanschlag rechts vorne:\t{endstops[2]}" + \
+                                  f"Endanschlag rechts hinten:\t{endstops[3]}")
 
     def reset_errors(self):
         MotorAPI.reset_errors()
