@@ -82,7 +82,7 @@ class SliderApp(QMainWindow):
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
-                                  f"Status:\t{format(bin(status), '#010b')}\n" + \
+                                  f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
                                   f"Endanschlag links vorne:\t\t{endstops[0]}\n" + \
                                   f"Endanschlag links hinten:\t\t{endstops[1]}\n" + \
