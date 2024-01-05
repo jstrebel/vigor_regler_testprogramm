@@ -27,7 +27,7 @@ def set_state(state=4):
 def get_status():
     return read_i2c(addr, reg_status)
 
-def get_state(text=False):
+def get_state(numbers=False):
     status = get_status()
     state = (status & 0x00F0)>>4
     if state > 4:

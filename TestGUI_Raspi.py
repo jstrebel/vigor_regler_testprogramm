@@ -41,11 +41,11 @@ class SliderApp(QMainWindow):
         self.text_left = QLabel("Motor links:\n" + \
                                 "Sollwert:\t\t0\n" + \
                                 "Istwert:\t\t0\n" + \
-                                "Anschlag:\t\t0\n")
+                                "Anschlag:\t0\n")
         self.text_right = QLabel("Motor rechts:\n" + \
                                 "Sollwert:\t\t0\n" + \
                                 "Istwert:\t\t0\n" + \
-                                "Anschlag:\t\t0\n")
+                                "Anschlag:\t0\n")
 
         stack.addWidget(self.text_overall)
         stack.addWidget(self.reset_err)
@@ -73,12 +73,12 @@ class SliderApp(QMainWindow):
         self.text_left.setText(f"Motor links:\n" + \
                                f"Sollwert:\t\t{s[0]}%\n" + \
                                f"Istwert:\t\t{p[0]}\n" + \
-                               f"Anschlag:\t\t{a[0]}\n")
+                               f"Anschlag:\t{a[0]}\n")
         self.text_right.setText(f"Motor rechts:\n" + \
                                 f"Sollwert:\t\t{s[1]}%\n" + \
                                 f"Istwert:\t\t{p[1]}\n" + \
-                                f"Anschlag:\t\t{a[1]}\n")
-        state = MotorAPI.get_state(True)
+                                f"Anschlag:\t{a[1]}\n")
+        state = MotorAPI.get_state()
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
