@@ -19,9 +19,9 @@ class SliderApp(QMainWindow):
         self.text_overall = QLabel("Gesamtübersicht:\n" + \
                                    "Status:\t0b0000000000000000\n" + \
                                     "Controllerstate:\t0\n" + \
-                                    "Endanschlag links vorne:\tFalse\n" + \
-                                    "Endanschlag links hinten:\tFalse\n" + \
-                                    "Endanschlag rechts vorne:\tFalse\n" + \
+                                    "Endanschlag links vorne:\t\tFalse\n" + \
+                                    "Endanschlag links hinten:\t\tFalse\n" + \
+                                    "Endanschlag rechts vorne:\t\tFalse\n" + \
                                     "Endanschlag rechts hinten:\tFalse\n")
 
         self.reset_err = QPushButton("Fehler zurücksetzen")
@@ -78,15 +78,15 @@ class SliderApp(QMainWindow):
                                 f"Sollwert:\t\t{s[1]}%\n" + \
                                 f"Istwert:\t\t{p[1]}\n" + \
                                 f"Anschlag:\t\t{a[1]}\n")
-        state = MotorAPI.get_state()
+        state = MotorAPI.get_state(True)
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{bin(status)}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
-                                  f"Endanschlag links vorne:\t{endstops[0]}\n" + \
-                                  f"Endanschlag links hinten:\t{endstops[1]}\n" + \
-                                  f"Endanschlag rechts vorne:\t{endstops[2]}\n" + \
+                                  f"Endanschlag links vorne:\t\t{endstops[0]}\n" + \
+                                  f"Endanschlag links hinten:\t\t{endstops[1]}\n" + \
+                                  f"Endanschlag rechts vorne:\t\t{endstops[2]}\n" + \
                                   f"Endanschlag rechts hinten:\t{endstops[3]}\n")
 
     def reset_errors(self):

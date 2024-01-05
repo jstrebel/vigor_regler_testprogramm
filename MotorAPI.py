@@ -27,12 +27,22 @@ def set_state(state=4):
 def get_status():
     return read_i2c(addr, reg_status)
 
-def get_state():
+def get_state(text=False):
     status = get_status()
     state = (status & 0x00F0)>>4
     if state > 4:
         state = 4
-    return state
+    if text:
+        return state
+    else:
+        if state == 1:
+            return "Semiautomatik"
+        elif state == 2:
+            return "Automatik"
+        elif state == 3:
+            return "Manuell"
+        else: 
+            return "Fehler"
 
 def get_endstops():
     status = get_status()
