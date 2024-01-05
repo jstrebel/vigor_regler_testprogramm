@@ -32,7 +32,7 @@ def get_state(numbers=False):
     state = (status & 0x00F0)>>4
     if state > 4:
         state = 4
-    if text:
+    if numbers:
         return state
     else:
         if state == 1:
