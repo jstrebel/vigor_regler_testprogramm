@@ -21,8 +21,8 @@ class SliderApp(QMainWindow):
                                     "Controllerstate:\t0\n" + \
                                     "Endanschlag links hinten:\t\tFalse\n" + \
                                     "Endanschlag links vorne:\t\tFalse\n" + \
-                                    "Endanschlag rechts hinten:\t\tFalse\n" + \
-                                    "Endanschlag rechts vorne:\tFalse\n")
+                                    "Endanschlag rechts hinten:\tFalse\n" + \
+                                    "Endanschlag rechts vorne:\t\tFalse\n")
 
         self.reset_err = QPushButton("Fehler zurücksetzen")
         self.reset_err.pressed.connect(self.reset_errors)
@@ -86,8 +86,8 @@ class SliderApp(QMainWindow):
                                   f"Controllerstate:\t{state}\n" + \
                                   f"Endanschlag links hinten:\t\t{endstops[0]}\n" + \
                                   f"Endanschlag links vorne:\t\t{endstops[1]}\n" + \
-                                  f"Endanschlag rechts hinten:\t\t{endstops[2]}\n" + \
-                                  f"Endanschlag rechts vorne:\t{endstops[3]}\n")
+                                  f"Endanschlag rechts hinten:\t{endstops[2]}\n" + \
+                                  f"Endanschlag rechts vorne:\t\t{endstops[3]}\n")
 
     def reset_errors(self):
         MotorAPI.reset_errors()
