@@ -45,13 +45,15 @@ class SliderApp(QMainWindow):
 
         self.text_left = QLabel("Motor links:\n" + \
                                 "Sollwert:\t\t0\n" + \
-                                "Istwert:\t\t0\n")
+                                "Istwert:\t\t0\n" + \
+                                "Anschlag:\t0\n")
         self.spin_vend_left = QSpinBox()
         self.spin_vend_left.setMaximum(1000)
 
         self.text_right = QLabel("Motor rechts:\n" + \
                                 "Sollwert:\t\t0\n" + \
-                                "Istwert:\t\t0\n")
+                                "Istwert:\t\t0\n" + \
+                                "Anschlag:\t0\n")
         self.spin_vend_right = QSpinBox()
         self.spin_vend_right.setMaximum(1000)
 
@@ -87,12 +89,12 @@ class SliderApp(QMainWindow):
         a = MotorAPI.get_vend()
         self.text_left.setText(f"Motor links:\n" + \
                                f"Sollwert:\t\t{s[0]}%\n" + \
-                               f"Istwert:\t\t{p[0]}\n")
+                               f"Istwert:\t\t{p[0]}\n" + \
+                                f"Anschlag:\t{a[0]}\n")
         self.text_right.setText(f"Motor rechts:\n" + \
                                 f"Sollwert:\t\t{s[1]}%\n" + \
-                                f"Istwert:\t\t{p[1]}\n")
-        self.spin_vend_left.setValue(a[0])
-        self.spin_vend_right.setValue(a[1])
+                                f"Istwert:\t\t{p[1]}\n" + \
+                                f"Anschlag:\t{a[1]}\n")
         state = MotorAPI.get_state()
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
