@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
 import MotorAPI
 
@@ -15,6 +15,8 @@ class SliderApp(QMainWindow):
 
         layout = QHBoxLayout(self.central_widget)
         stack = QVBoxLayout()
+        stackm1 = QVBoxLayout()
+        stackm2 = QVBoxLayout()
 
         self.text_overall = QLabel("Gesamtübersicht:\n" + \
                                    "Status:\t0b0000000000000000\n" + \
@@ -23,6 +25,9 @@ class SliderApp(QMainWindow):
                                     "Endanschlag links vorne:\t\tFalse\n" + \
                                     "Endanschlag rechts hinten:\tFalse\n" + \
                                     "Endanschlag rechts vorne:\t\tFalse\n")
+
+        self.btn_new_vend = QPushButton("neue Anschläge senden")
+        self.btn_new_vend.pressed.connect(self.new_vend)
 
         self.reset_err = QPushButton("Fehler zurücksetzen")
         self.reset_err.pressed.connect(self.reset_errors)
@@ -40,22 +45,32 @@ class SliderApp(QMainWindow):
 
         self.text_left = QLabel("Motor links:\n" + \
                                 "Sollwert:\t\t0\n" + \
-                                "Istwert:\t\t0\n" + \
-                                "Anschlag:\t0\n")
+                                "Istwert:\t\t0\n")
+        self.spin_vend_left = QSpinBox()
+        self.spin_vend_left.setMaximum(1000)
+
         self.text_right = QLabel("Motor rechts:\n" + \
                                 "Sollwert:\t\t0\n" + \
-                                "Istwert:\t\t0\n" + \
-                                "Anschlag:\t0\n")
+                                "Istwert:\t\t0\n")
+        self.spin_vend_right = QSpinBox()
+        self.spin_vend_right.setMaximum(1000)
 
         stack.addWidget(self.text_overall)
+        stack.addWidget(self.btn_new_vend)
         stack.addWidget(self.reset_err)
         stack.addWidget(self.reset_s)
 
+        stackm1.addWidget(self.text_left)
+        stackm1.addWidget(self.spin_vend_left)
+
+        stackm2.addWidget(self.text_right)
+        stackm2.addWidget(self.spin_vend_right)
+
         layout.addLayout(stack)
         layout.addWidget(self.slider_left)
-        layout.addWidget(self.text_left)
+        layout.addWidget(self.stackm1)
         layout.addWidget(self.slider_right)
-        layout.addWidget(self.text_right)
+        layout.addWidget(self.stackm2)
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
@@ -72,12 +87,12 @@ class SliderApp(QMainWindow):
         a = MotorAPI.get_vend()
         self.text_left.setText(f"Motor links:\n" + \
                                f"Sollwert:\t\t{s[0]}%\n" + \
-                               f"Istwert:\t\t{p[0]}\n" + \
-                               f"Anschlag:\t{a[0]}\n")
+                               f"Istwert:\t\t{p[0]}\n")
         self.text_right.setText(f"Motor rechts:\n" + \
                                 f"Sollwert:\t\t{s[1]}%\n" + \
-                                f"Istwert:\t\t{p[1]}\n" + \
-                                f"Anschlag:\t{a[1]}\n")
+                                f"Istwert:\t\t{p[1]}\n")
+        self.spin_vend_left.setValue(a[0])
+        self.spin_vend_right.setValue(a[1])
         state = MotorAPI.get_state()
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
@@ -89,11 +104,14 @@ class SliderApp(QMainWindow):
                                   f"Endanschlag rechts hinten:\t{endstops[2]}\n" + \
                                   f"Endanschlag rechts vorne:\t\t{endstops[3]}\n")
 
+    def new_vend(self):
+        MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
+
     def reset_errors(self):
         MotorAPI.reset_errors()
 
     def reset_state(self):
-        MotorAPI.set_state(2)
+        MotorAPI.reset_state()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

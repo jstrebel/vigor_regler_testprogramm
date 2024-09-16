@@ -10,19 +10,9 @@ reg_vend_l = 0x12
 reg_ref_r = 0x20
 reg_pos_r = 0x21
 reg_vend_r = 0x22
+reg_cmd = 0x90
 
 bus = SMBus(1)
-
-def set_state(state=4):
-    if state < 0 or state > 4:
-        print("State muss zwischen 0 und 4 sein")
-        return
-    else:
-        status = read_i2c(addr, reg_status)
-        status &= 0xFF0F
-        status |= state<<4
-        write_i2c(addr, reg_status, status)
-        return
 
 def get_status():
     return read_i2c(addr, reg_status)
@@ -57,9 +47,7 @@ def get_pos():
 def set_vend(vend_l, vend_r):
     write_i2c(addr, reg_vend_l, vend_l)
     write_i2c(addr, reg_vend_r, vend_r)
-    status = read_i2c(addr, reg_status)
-    status |= 0x4000
-    write_i2c(addr, reg_status, status)
+    write_i2c(addr, reg_cmd, 0x01)
     return
 
 def get_vend():
@@ -79,10 +67,11 @@ def set_ref(ref_l, ref_r):
     return
 
 def reset_errors():
-    status = read_i2c(addr, reg_status)
-    status &= 0xE0FF
-    write_i2c(addr, reg_status, status)
+    write_i2c(addr, reg_cmd, 0x02)
     return
+
+def reset_state():
+    write_i2c(addr, reg_cmd, 0x04)
 
 def send_heartbeat(value=1000):
     write_i2c(addr, reg_heart, value)
