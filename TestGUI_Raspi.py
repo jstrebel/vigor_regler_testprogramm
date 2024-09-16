@@ -68,9 +68,9 @@ class SliderApp(QMainWindow):
 
         layout.addLayout(stack)
         layout.addWidget(self.slider_left)
-        layout.addWidget(self.stackm1)
+        layout.addWidget(stackm1)
         layout.addWidget(self.slider_right)
-        layout.addWidget(self.stackm2)
+        layout.addWidget(stackm2)
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
