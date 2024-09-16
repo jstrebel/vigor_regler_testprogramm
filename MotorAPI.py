@@ -41,7 +41,7 @@ def get_endstops():
 
 def get_watchdogs():
     status = get_status()
-    watchdogs = [bool(status & 0b100000000), bool(status & 0b1000000000), bool(status & 0b10000000000), bool(status & 0b100000000000)]
+    watchdogs = [bool(status & 0b10000000000), bool(status & 0b100000000000), bool(status & 0b100000000), bool(status & 0b1000000000)]
     return watchdogs
 
 def get_pos():
