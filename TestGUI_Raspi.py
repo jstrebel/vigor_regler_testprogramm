@@ -24,7 +24,11 @@ class SliderApp(QMainWindow):
                                     "Endanschlag links hinten:\t\tFalse\n" + \
                                     "Endanschlag links vorne:\t\tFalse\n" + \
                                     "Endanschlag rechts hinten:\tFalse\n" + \
-                                    "Endanschlag rechts vorne:\t\tFalse\n")
+                                    "Endanschlag rechts vorne:\t\tFalse\n" + \
+                                    "Watchdog links hinten:\tFalse\n" + \
+                                    "Watchdog links vorne:\tFalse\n" + \
+                                    "Watchdog rechts hinten:\tFalse\n" + \
+                                    "Watchdog rechts vorne:\tFalse\n")
 
         self.btn_new_vend = QPushButton("neue Anschläge senden")
         self.btn_new_vend.pressed.connect(self.new_vend)
@@ -98,13 +102,18 @@ class SliderApp(QMainWindow):
         state = MotorAPI.get_state()
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
+        watchdogs = MotorAPI.get_watchdogs()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
                                   f"Endanschlag links hinten:\t\t{endstops[0]}\n" + \
                                   f"Endanschlag links vorne:\t\t{endstops[1]}\n" + \
                                   f"Endanschlag rechts hinten:\t{endstops[2]}\n" + \
-                                  f"Endanschlag rechts vorne:\t\t{endstops[3]}\n")
+                                  f"Endanschlag rechts vorne:\t\t{endstops[3]}\n" + \
+                                  f"Watchdog links hinten:\t{watchdogs[0]}\n" + \
+                                  f"Watchdog links vorne:\t{watchdogs[1]}\n" + \
+                                  f"Watchdog rechts hinten:\t{watchdogs[2]}\n" + \
+                                  f"Watchdog rechts vorne:\t{watchdogs[3]}\n")
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())

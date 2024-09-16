@@ -39,6 +39,11 @@ def get_endstops():
     endstops = [bool(status & 0b1), bool(status & 0b10), bool(status & 0b100), bool(status & 0b1000)]
     return endstops
 
+def get_watchdogs():
+    status = get_status()
+    watchdogs = [bool(status & 0b100000000), bool(status & 0b1000000000), bool(status & 0b10000000000), bool(status & 0b100000000000)]
+    return watchdogs
+
 def get_pos():
     pos_l = read_i2c(addr, reg_pos_l)
     pos_r = read_i2c(addr, reg_pos_r)
