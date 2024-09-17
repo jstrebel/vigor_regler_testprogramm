@@ -48,6 +48,7 @@ class SliderApp(QMainWindow):
         self.slider_right.valueChanged.connect(self.update_reference)
 
         self.text_left = QLabel("Motor links:\n" + \
+                                "Inverted:\tFalse\n" + \
                                 "Sollwert:\t\t0\n" + \
                                 "Istwert:\t\t0\n" + \
                                 "Anschlag:\t0\n")
@@ -55,6 +56,7 @@ class SliderApp(QMainWindow):
         self.spin_vend_left.setMaximum(1000)
 
         self.text_right = QLabel("Motor rechts:\n" + \
+                                "Inverted:\tFalse\n" + \
                                 "Sollwert:\t\t0\n" + \
                                 "Istwert:\t\t0\n" + \
                                 "Anschlag:\t0\n")
@@ -91,11 +93,14 @@ class SliderApp(QMainWindow):
         p = MotorAPI.get_pos()
         s = [self.slider_left.value(), self.slider_right.value()]
         a = MotorAPI.get_vend()
+        i = MotorAPI.get_inversion()
         self.text_left.setText(f"Motor links:\n" + \
+                               f"Inverted:\t{i[0]}\n" + \
                                f"Sollwert:\t\t{s[0]}%\n" + \
                                f"Istwert:\t\t{p[0]}\n" + \
                                 f"Anschlag:\t{a[0]}\n")
         self.text_right.setText(f"Motor rechts:\n" + \
+                                f"Inverted:\t{i[1]}\n" + \
                                 f"Sollwert:\t\t{s[1]}%\n" + \
                                 f"Istwert:\t\t{p[1]}\n" + \
                                 f"Anschlag:\t{a[1]}\n")

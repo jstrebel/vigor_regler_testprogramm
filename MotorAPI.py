@@ -44,6 +44,11 @@ def get_watchdogs():
     watchdogs = [bool(status & 0b100000000000), bool(status & 0b10000000000), bool(status & 0b1000000000), bool(status & 0b100000000)]
     return watchdogs
 
+def get_inversion():
+    status = get_status()
+    inversion = [bool(status & 0b1000000000000), bool(status & 0b10000000000000)]
+    return inversion
+
 def get_pos():
     pos_l = read_i2c(addr, reg_pos_l)
     pos_r = read_i2c(addr, reg_pos_r)
