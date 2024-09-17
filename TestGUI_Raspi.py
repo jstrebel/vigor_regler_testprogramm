@@ -28,7 +28,10 @@ class SliderApp(QMainWindow):
                                     "Watchdog links hinten:\tFalse\n" + \
                                     "Watchdog links vorne:\tFalse\n" + \
                                     "Watchdog rechts hinten:\tFalse\n" + \
-                                    "Watchdog rechts vorne:\tFalse\n")
+                                    "Watchdog rechts vorne:\tFalse\n" + \
+                                    "\n" + \
+                                    "EEPROM Counter:\t0\n" + \
+                                    "EEPROM Offset:\t0\n")
 
         self.btn_new_vend = QPushButton("neue Anschläge senden")
         self.btn_new_vend.pressed.connect(self.new_vend)
@@ -108,6 +111,7 @@ class SliderApp(QMainWindow):
         status = MotorAPI.get_status()
         endstops = MotorAPI.get_endstops()
         watchdogs = MotorAPI.get_watchdogs()
+        e = MotorAPI.get_eeprom_state()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
@@ -118,7 +122,10 @@ class SliderApp(QMainWindow):
                                   f"Watchdog links hinten:\t{watchdogs[0]}\n" + \
                                   f"Watchdog links vorne:\t{watchdogs[1]}\n" + \
                                   f"Watchdog rechts hinten:\t{watchdogs[2]}\n" + \
-                                  f"Watchdog rechts vorne:\t{watchdogs[3]}\n")
+                                  f"Watchdog rechts vorne:\t{watchdogs[3]}\n" + \
+                                  f"\n" + \
+                                  f"EEPROM Counter:\t{e[0]}\n" + \
+                                  f"EEPROM Offset:\t{e[1]}\n")
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
