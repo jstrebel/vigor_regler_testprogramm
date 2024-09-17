@@ -31,7 +31,7 @@ class SliderApp(QMainWindow):
                                     "Watchdog rechts vorne:\tFalse\n" + \
                                     "\n" + \
                                     "EEPROM Counter:\t0\n" + \
-                                    "EEPROM Offset:\t0\n")
+                                    "EEPROM Offset:\t\t0\n")
 
         self.btn_new_vend = QPushButton("neue Anschläge senden")
         self.btn_new_vend.pressed.connect(self.new_vend)
@@ -125,7 +125,7 @@ class SliderApp(QMainWindow):
                                   f"Watchdog rechts vorne:\t{watchdogs[3]}\n" + \
                                   f"\n" + \
                                   f"EEPROM Counter:\t{e[0]}\n" + \
-                                  f"EEPROM Offset:\t{e[1]}\n")
+                                  f"EEPROM Offset:\t\t{e[1]}\n")
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
