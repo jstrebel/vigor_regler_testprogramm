@@ -10,19 +10,11 @@ reg_vend_l = 0x12
 reg_ref_r = 0x20
 reg_pos_r = 0x21
 reg_vend_r = 0x22
+reg_mem_cnt = 0x80
+reg_mem_off = 0x81
+reg_cmd = 0x90
 
 bus = SMBus(1)
-
-def set_state(state=4):
-    if state < 0 or state > 4:
-        print("State muss zwischen 0 und 4 sein")
-        return
-    else:
-        status = read_i2c(addr, reg_status)
-        status &= 0xFF0F
-        status |= state<<4
-        write_i2c(addr, reg_status, status)
-        return
 
 def get_status():
     return read_i2c(addr, reg_status)
@@ -46,20 +38,33 @@ def get_state(numbers=False):
 
 def get_endstops():
     status = get_status()
-    endstops = [bool(status & 0b1), bool(status & 0b10), bool(status & 0b100), bool(status & 0b1000)]
+    endstops = [bool(status & 0b10), bool(status & 0b1), bool(status & 0b1000), bool(status & 0b100)]
     return endstops
+
+def get_watchdogs():
+    status = get_status()
+    watchdogs = [bool(status & 0b100000000000), bool(status & 0b10000000000), bool(status & 0b1000000000), bool(status & 0b100000000)]
+    return watchdogs
+
+def get_inversion():
+    status = get_status()
+    inversion = [bool(status & 0b1000000000000), bool(status & 0b10000000000000)]
+    return inversion
 
 def get_pos():
     pos_l = read_i2c(addr, reg_pos_l)
     pos_r = read_i2c(addr, reg_pos_r)
     return [pos_l, pos_r]
 
+def get_eeprom_state():
+    mem_cnt = read_i2c(addr, reg_mem_cnt)
+    mem_off = read_i2c(addr, reg_mem_off)
+    return [mem_cnt, mem_off]
+
 def set_vend(vend_l, vend_r):
     write_i2c(addr, reg_vend_l, vend_l)
     write_i2c(addr, reg_vend_r, vend_r)
-    status = read_i2c(addr, reg_status)
-    status |= 0x4000
-    write_i2c(addr, reg_status, status)
+    write_i2c(addr, reg_cmd, 0x01)
     return
 
 def get_vend():
@@ -79,10 +84,11 @@ def set_ref(ref_l, ref_r):
     return
 
 def reset_errors():
-    status = read_i2c(addr, reg_status)
-    status &= 0xE0FF
-    write_i2c(addr, reg_status, status)
+    write_i2c(addr, reg_cmd, 0x02)
     return
+
+def reset_state():
+    write_i2c(addr, reg_cmd, 0x04)
 
 def send_heartbeat(value=1000):
     write_i2c(addr, reg_heart, value)
