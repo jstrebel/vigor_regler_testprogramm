@@ -98,7 +98,7 @@ def read_can(reg_addr):
 
 def write_can(reg_addr, val):
      with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
-        msg = can.Message(arbitration_id=reg_addr, data=[val%256, (val/256)%256], is_extended_id=False)
+        msg = can.Message(arbitration_id=reg_addr, data=[val%256, (val//256)%256], is_extended_id=False)
         try:
             bus.send(msg)
         except:
