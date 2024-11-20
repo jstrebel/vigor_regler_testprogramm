@@ -85,9 +85,9 @@ def send_heartbeat(value=1000):
     return
 
 def read_can(reg_addr):
-    write_can(0x99, reg_addr)
     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
         try:
+            bus.send(can.Message(arbitration_id=0x99, data=[reg_addr, 0], is_extended_id=False))
             for msg in bus:
                 if msg.arbitration_id == reg_addr:
                     if len(msg.data) == 2:
