@@ -92,8 +92,9 @@ def read_can(reg_addr):
                 if msg.arbitration_id == reg_addr:
                     if len(msg.data) == 2:
                         return msg.data[0] + msg.data[1]*256
-        except:
+        except Exception as e:
             print("Fehler beim Lesen")
+            print(e)
             return 0
 
 def write_can(reg_addr, val):
