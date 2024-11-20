@@ -85,7 +85,7 @@ class SliderApp(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
-        self.timer.start(100)  # Alle 100 Millisekunden
+        self.timer.start(500)  # Alle 100 Millisekunden
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
