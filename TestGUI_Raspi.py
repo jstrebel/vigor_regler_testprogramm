@@ -86,11 +86,13 @@ class SliderApp(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(100)  # Alle 100 Millisekunden
+        print("Timer gestartet")
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
 
     def update(self):
+        print("Update")
         MotorAPI.send_heartbeat()
         #Update Text
         p = MotorAPI.get_pos()
