@@ -19,3 +19,15 @@ dtparam=spi=on
 dtoverlay=spi1-1cs
 dtoverlay=mcp2515,spi1-0,oscillator=16000000,interrupt=25
 ```
+
+### Pinbelegung
+| **Board-Bezeichnung** | **Raspi-Pin** | **Raspi-Bezeichnung** | **Raspi-Alternativfunktion** |
+|------------------------|---------------|------------------------|-----------------------------|
+| VCC                   | 1             | 3v3 Power             |                             |
+| VCC1                  | 2             | 5v Power              |                             |
+| GND                   | 6             | Ground                |                             |
+| CS                    | 12            | GPIO18                | SPI1 CE0                   |
+| SO                    | 35            | GPIO19                | SPI1 MISO                  |
+| SI                    | 38            | GPIO20                | SPI1 MOSI                  |
+| CLK                   | 40            | GPIO21                | SPI1 SCLK                  |
+| INT                   | 22            | GPIO25                |                             |
