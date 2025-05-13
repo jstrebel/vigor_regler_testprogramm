@@ -12,7 +12,7 @@ candump can0
 ```
 
 
-## Aufsetzen 
+## Aufsetzen SPI
 Damit das MCP2515-Board am SPI1 betrieben werden kann sind folgende Änderungen in */boot/firmware/config.txt* nötig:
 ```
 dtparam=spi=on
@@ -31,3 +31,14 @@ dtoverlay=mcp2515,spi1-0,oscillator=16000000,interrupt=26
 | SI                    | 38            | GPIO20                | SPI1 MOSI                  |
 | CLK                   | 40            | GPIO21                | SPI1 SCLK                  |
 | INT                   | 37            | GPIO26                |                             |
+
+## Python environement
+Da PyQt5 auf dem Raspi Probleme bereitet, funktioniert die Standardanwendung nicht. Daher muss das venv mit den site-packages installiert werden, da PyQt5 da bereits dabei ist.
+```
+python -m venv --system-site-packages .venv
+```
+Anschliessend muss das Environement aktiviert werden und die requirements geladen werden.
+```
+source .venv/bin/activate
+pip install -r requirements.txt
+```
