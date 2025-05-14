@@ -1,6 +1,7 @@
 import can 
 
 reg_heart = 0x01
+reg_heart_hb = 0x02
 reg_status = 0x05
 reg_ref_l = 0x10
 reg_pos_l = 0x11
@@ -8,6 +9,7 @@ reg_vend_l = 0x12
 reg_ref_r = 0x20
 reg_pos_r = 0x21
 reg_vend_r = 0x22
+reg_hb_in = 0x70
 reg_mem_cnt = 0x80
 reg_mem_off = 0x81
 reg_cmd = 0x90
@@ -15,8 +17,9 @@ reg_cmd = 0x90
 def get_status():
     return read_can(reg_status)
 
-def get_state(numbers=False):
-    status = get_status()
+def get_state(numbers=False, status=None):
+    if status is None:
+        status = get_status()
     state = (status & 0x00F0)>>4
     if state > 4:
         state = 4
@@ -32,18 +35,21 @@ def get_state(numbers=False):
         else: 
             return "Fehler"
 
-def get_endstops():
-    status = get_status()
+def get_endstops(status=None):
+    if status is None:
+        status = get_status()
     endstops = [bool(status & 0b10), bool(status & 0b1), bool(status & 0b1000), bool(status & 0b100)]
     return endstops
 
-def get_watchdogs():
-    status = get_status()
+def get_watchdogs(status=None):
+    if status is None:
+        status = get_status()
     watchdogs = [bool(status & 0b100000000000), bool(status & 0b10000000000), bool(status & 0b1000000000), bool(status & 0b100000000)]
     return watchdogs
 
-def get_inversion():
-    status = get_status()
+def get_inversion(status=None):
+    if status is None:
+        status = get_status()
     inversion = [bool(status & 0b1000000000000), bool(status & 0b10000000000000)]
     return inversion
 
@@ -79,9 +85,12 @@ def reset_errors():
 
 def reset_state():
     write_can(reg_cmd, 0x04)
+    write_can(reg_hb_in, 0x04)
+    return
 
 def send_heartbeat(value=1000):
     write_can(reg_heart, value)
+    write_can(reg_heart_hb, value)
     return
 
 def read_can(reg_addr):

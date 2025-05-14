@@ -107,10 +107,11 @@ class SliderApp(QMainWindow):
                                 f"Sollwert:\t\t{s[1]}%\n" + \
                                 f"Istwert:\t\t{p[1]}\n" + \
                                 f"Anschlag:\t{a[1]}\n")
-        state = MotorAPI.get_state()
         status = MotorAPI.get_status()
-        endstops = MotorAPI.get_endstops()
-        watchdogs = MotorAPI.get_watchdogs()
+        state = MotorAPI.get_state(status=status)
+        endstops = MotorAPI.get_endstops(status=status)
+        watchdogs = MotorAPI.get_watchdogs(status=status)
+        inversion = MotorAPI.get_inversion(status=status)
         e = MotorAPI.get_eeprom_state()
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
@@ -125,7 +126,9 @@ class SliderApp(QMainWindow):
                                   f"Watchdog rechts vorne:\t{watchdogs[3]}\n" + \
                                   f"\n" + \
                                   f"EEPROM Counter:\t{e[0]}\n" + \
-                                  f"EEPROM Offset:\t\t{e[1]}\n")
+                                  f"EEPROM Offset:\t\t{e[1]}\n" + \
+                                  f"Inversion left:\t{inversion[0]}\n" + \
+                                  f"Inversion right:\t{inversion[1]}\n")
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
