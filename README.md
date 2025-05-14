@@ -47,7 +47,7 @@ pip install -r requirements.txt
 Die Kommunikation auf dem CAN Bus erfolgt in 5 verschiedenen Use-Cases.
 
 ### update
-AA und BB sind die Werte der Heartbeats
+AA und BB sind Platzhalter für die Werte der Heartbeats
 .. sind Platzhalter für die Werte der jeweiligen Register
 ```
 ADR  LSB  MSB
@@ -79,7 +79,7 @@ ADR  LSB  MSB
 Verbesserungspotenzial da 5x hintereinander das Statusregister abgefragt wird
 
 ### neue Anschläge
-XX und YY sind die Werte der neuen Anschläge
+XX und YY sind Platzhalter für die Werte der neuen Anschläge
 ```
 ADR  LSB  MSB
 0x12 0xXX 0xXX
@@ -97,4 +97,12 @@ ADR  LSB  MSB
 ```
 ADR  LSB  MSB
 0x90 0x04 0x00
+```
+
+### neue Sollwerte
+SS und TT sind Platzhalter für die Werte der neuen Anschläge
+```
+ADR  LSB  MSB
+0x10 0xSS 0xSS
+0x20 0xTT 0xTT
 ```
