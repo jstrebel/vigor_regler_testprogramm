@@ -23,7 +23,7 @@ def set_mux(i):
     s1.value = bits[1]
     s2.value = bits[2]
 
-def read_button(i):
+def get_button(i):
     if not 0 <= i <= 8:
         raise ValueError()
     if i < 8:
