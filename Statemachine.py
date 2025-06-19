@@ -21,143 +21,143 @@ def get_state():
     if state == "INIT":
         if IOs.get_button(B1):
             pass
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             pass
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             pass
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             pass
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             pass
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             state = "MANUAL_L"
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             state = "CALIB"
 
 
     elif state == "CALIB":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             pass
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
         
 
     elif state == "MANUAL_L":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             state = "CALIB"
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
 
     elif state == "ERROR":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             state = "CALIB"
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
 
     elif state == "SEMI":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             state = "CALIB"
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
 
     elif state == "AUTO":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             state = "CALIB"
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
 
     elif state == "EDGE_L":
         if IOs.get_button(B1):
             state = "AUTO"
-        elif IOs.get_button(B2):
+        if IOs.get_button(B2):
             state = "SEMI"
-        elif IOs.get_button(B3):
+        if IOs.get_button(B3):
             state = "MANUAL_L"
-        elif IOs.get_button(B4):
+        if IOs.get_button(B4):
             state = "EDGE_L"
-        elif IOs.get_button(B5):
+        if IOs.get_button(B5):
             state = "CALIB"
-        elif IOs.get_button(B6):
+        if IOs.get_button(B6):
             pass
-        elif IOs.get_button(B7):
+        if IOs.get_button(B7):
             pass
-        elif IOs.get_button(B8):
+        if IOs.get_button(B8):
             pass
-        elif IOs.get_button(B9):
+        if IOs.get_button(B9):
             pass
         
     print("State:", state)
