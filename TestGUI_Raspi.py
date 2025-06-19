@@ -87,9 +87,13 @@ class SliderApp(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(500)  # Alle 100 Millisekunden
+        RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
+        RedisAPI.set_value("hmi_state", "INIT")
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
+        RedisAPI.set_value("hmi_soll_l", str(self.slider_left.value()))
+        RedisAPI.set_value("hmi_soll_r", str(self.slider_right.value()))
 
     def update(self):
         MotorAPI.send_heartbeat()
@@ -133,6 +137,7 @@ class SliderApp(QMainWindow):
         
         RedisAPI.set_value("hmi_pos_l", str(p[0]))
         RedisAPI.set_value("hmi_pos_r", str(p[1]))
+        RedisAPI.set_value("hmi_vend_ist", str(a[0]))
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
