@@ -22,6 +22,7 @@ def get_soll():
 
 def get_state():
     global state
+    global soll_links, soll_rechts
 
     if state == "INIT":
         if IOs.get_button(B1):
