@@ -141,6 +141,9 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_pos_r", str(p[1]))
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
+        if True:
+            self.slider_left.setValue(Statemachine.get_soll()[0])
+            self.slider_right.setValue(Statemachine.get_soll()[1])
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())

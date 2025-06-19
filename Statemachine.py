@@ -11,9 +11,14 @@ B7 = 5
 B8 = 6
 B9 = 7
 
+soll_links = 0
+soll_rechts = 0
 
 state = "INIT"
-soll_vend = 0
+
+def get_soll():
+    global soll_links, soll_rechts
+    return soll_links, soll_rechts
 
 def get_state():
     global state
@@ -112,9 +117,11 @@ def get_state():
         if IOs.get_button(B5):
             pass
         if IOs.get_button(B6):
-            pass
+            soll_links = 100
+            soll_rechts = 100
         if IOs.get_button(B7):
-            pass
+            soll_links = 0
+            soll_rechts = 0
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
