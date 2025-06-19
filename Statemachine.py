@@ -33,7 +33,7 @@ def get_state():
         elif IOs.get_button(B6):
             pass
         elif IOs.get_button(B7):
-            pass
+            state = "EDGE_L"
         elif IOs.get_button(B8):
             state = "MANUAL_L"
         elif IOs.get_button(B9):
