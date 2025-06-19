@@ -162,4 +162,13 @@ def get_state():
             pass
         
     print("State:", state)
+    print("B1:", IOs.get_button(B1))
+    print("B2:", IOs.get_button(B2))
+    print("B3:", IOs.get_button(B3))
+    print("B4:", IOs.get_button(B4))
+    print("B5:", IOs.get_button(B5))
+    print("B6:", IOs.get_button(B6))
+    print("B7:", IOs.get_button(B7))
+    print("B8:", IOs.get_button(B8))
+    print("B9:", IOs.get_button(B9))
     return state
