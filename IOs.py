@@ -28,9 +28,9 @@ def get_button(i):
         raise ValueError()
     if i < 8:
         set_mux(i)
-        return a.is_active
+        return not a.is_active
     else:
         s02.value = 0
-        return a2.is_active
+        return not a2.is_active
         
         
