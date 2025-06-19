@@ -72,7 +72,7 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            soll_links = vend_soll
+            soll_links = vend_soll / 10
         
 
     elif state == "MANUAL_L":
@@ -87,9 +87,11 @@ def get_state():
         if IOs.get_button(B5):
             pass
         if IOs.get_button(B6):
-            pass
+            if soll_links < 100:
+                soll_links += 1
         if IOs.get_button(B7):
-            pass
+            if soll_links > 0:
+                soll_links -= 1
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -177,7 +179,8 @@ def get_state():
         if IOs.get_button(B9):
             pass
         
-        if state != oldstate:
-            soll_links = 0
-            soll_rechts = 0
+    if state != oldstate:
+        soll_links = 0
+        soll_rechts = 0
+        vend_soll = 0
     return state
