@@ -9,7 +9,6 @@ s1 = DigitalOutputDevice(1)
 s2 = DigitalOutputDevice(4)
 
 s02 = DigitalOutputDevice(6)
-s12 = DigitalOutputDevice(7)
 
 a = DigitalInputDevice(5)
 a2 = DigitalInputDevice(12)
@@ -32,7 +31,6 @@ def read_button(i):
         return a.is_active
     else:
         s02.value = 0
-        s12.value = 0
         return a2.is_active
         
         
