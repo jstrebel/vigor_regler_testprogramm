@@ -88,10 +88,10 @@ def get_state():
             pass
         if IOs.get_button(B6):
             if soll_links < 100:
-                soll_links += 1
+                soll_links += 5
         if IOs.get_button(B7):
             if soll_links > 0:
-                soll_links -= 1
+                soll_links -= 5
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
