@@ -13,6 +13,7 @@ B9 = 7
 
 soll_links = 0
 soll_rechts = 0
+vend_soll = 0
 
 state = "INIT"
 
@@ -20,9 +21,14 @@ def get_soll():
     global soll_links, soll_rechts
     return soll_links, soll_rechts
 
+def get_vend_soll():
+    global vend_soll
+    return vend_soll
+
 def get_state():
     global state
     global soll_links, soll_rechts
+    global vend_soll
     oldstate = state
 
     if state == "INIT":
@@ -58,13 +64,15 @@ def get_state():
         if IOs.get_button(B5):
             pass
         if IOs.get_button(B6):
-            pass
+            if vend_soll < 900:
+                vend_soll += 100
         if IOs.get_button(B7):
-            pass
+            if vend_soll > 100:
+                vend_soll -= 100
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            pass
+            soll_links = vend_soll
         
 
     elif state == "MANUAL_L":

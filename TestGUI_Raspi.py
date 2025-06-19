@@ -141,6 +141,7 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_pos_r", str(p[1]))
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
+        RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
         if True:
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
