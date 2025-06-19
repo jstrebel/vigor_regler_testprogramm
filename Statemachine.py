@@ -1,7 +1,6 @@
 import IOs
 
-# ACHTUNG ALLE K9 sind auf K8 gesetzt und K8 auf K7
-
+# ACHTUNG B5 ist immer True und gesperrt da SPI0 blockiert
 B1 = 3
 B2 = 2
 B3 = 1
@@ -33,7 +32,7 @@ def get_state():
         elif IOs.get_button(B6):
             pass
         elif IOs.get_button(B7):
-            state = "EDGE_L"
+            pass
         elif IOs.get_button(B8):
             state = "MANUAL_L"
         elif IOs.get_button(B9):
