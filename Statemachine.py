@@ -160,5 +160,6 @@ def get_state():
             pass
         elif IOs.get_button(B9):
             pass
-
+        
+    print("State:", state)
     return state
