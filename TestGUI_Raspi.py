@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
 import MotorAPI
+import RedisAPI
 
 class SliderApp(QMainWindow):
     def __init__(self):
@@ -129,6 +130,9 @@ class SliderApp(QMainWindow):
                                   f"EEPROM Offset:\t\t{e[1]}\n" + \
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
+        
+        RedisAPI.set_value("hmi_pos_l", str(p[0]))
+        RedisAPI.set_value("hmi_pos_r", str(p[1]))
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
