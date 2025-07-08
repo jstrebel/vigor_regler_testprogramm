@@ -97,8 +97,8 @@ class SliderApp(QMainWindow):
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
-        RedisAPI.set_value("hmi_soll_l", [str(self.slider_left.value()) + "%"])
-        RedisAPI.set_value("hmi_soll_r", [str(self.slider_right.value()) + "%"])
+        RedisAPI.set_value("hmi_soll_l", str(self.slider_left.value()) + "%")
+        RedisAPI.set_value("hmi_soll_r", str(self.slider_right.value()) + "%")
 
     def update(self):
         MotorAPI.send_heartbeat()
@@ -140,8 +140,8 @@ class SliderApp(QMainWindow):
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
         
-        RedisAPI.set_value("hmi_pos_l", [str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%"])
-        RedisAPI.set_value("hmi_pos_r", [str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%"])
+        RedisAPI.set_value("hmi_pos_l", str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
+        RedisAPI.set_value("hmi_pos_r", str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
         RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
