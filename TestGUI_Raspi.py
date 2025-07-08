@@ -1,4 +1,5 @@
 import sys
+import math
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
 import MotorAPI
@@ -91,11 +92,13 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
         Statemachine.soll_vend = MotorAPI.get_vend()[0]
         RedisAPI.set_value("hmi_state", "INIT")
+        MotorAPI.reset_errors()
+        MotorAPI.reset_state()
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
-        RedisAPI.set_value("hmi_soll_l", str(self.slider_left.value()))
-        RedisAPI.set_value("hmi_soll_r", str(self.slider_right.value()))
+        RedisAPI.set_value("hmi_soll_l", [str(self.slider_left.value()) + "%"])
+        RedisAPI.set_value("hmi_soll_r", [str(self.slider_right.value()) + "%"])
 
     def update(self):
         MotorAPI.send_heartbeat()
@@ -137,14 +140,25 @@ class SliderApp(QMainWindow):
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
         
-        RedisAPI.set_value("hmi_pos_l", str(p[0]))
-        RedisAPI.set_value("hmi_pos_r", str(p[1]))
+        RedisAPI.set_value("hmi_pos_l", [str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%"])
+        RedisAPI.set_value("hmi_pos_r", [str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%"])
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
         RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
         if True:
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
+
+    def get_pos_prozent(self, pos, vend, inversion):
+        if inversion:
+            pos_prozent = (900 - pos) / (900 - vend) * 100
+        else: 
+            pos_prozent = (pos - 100) / (vend - 100) * 100
+        if pos_prozent < 0:
+            pos_prozent = 0
+        elif pos_prozent > 100:
+            pos_prozent = 100
+        return math.floor(pos_prozent)
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
