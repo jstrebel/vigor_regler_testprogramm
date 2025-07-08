@@ -65,14 +65,14 @@ def get_state():
             pass
         if IOs.get_button(B6):
             if vend_soll < 900:
-                vend_soll += 100
+                vend_soll += 50
         if IOs.get_button(B7):
             if vend_soll > 100:
-                vend_soll -= 100
+                vend_soll -= 50
         if IOs.get_button(B8):
-            pass
-        if IOs.get_button(B9):
             soll_links = int(vend_soll / 10)
+        if IOs.get_button(B9):
+            soll_links = 0
         
 
     elif state == "MANUAL_L":
@@ -95,7 +95,29 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
+            state = "MANUAL_R"
+
+    elif state == "MANUAL_R":
+        if IOs.get_button(B1):
+            state = "AUTO"
+        if IOs.get_button(B2):
+            state = "SEMI"
+        if IOs.get_button(B3):
+            state = "MANUAL_L"
+        if IOs.get_button(B4):
+            state = "EDGE_L"
+        if IOs.get_button(B5):
             pass
+        if IOs.get_button(B6):
+            if soll_rechts < 100:
+                soll_rechts += 5
+        if IOs.get_button(B7):
+            if soll_rechts > 0:
+                soll_rechts -= 5
+        if IOs.get_button(B8):
+            pass
+        if IOs.get_button(B9):
+            state = "MANUAL_L"
 
     elif state == "ERROR":
         if IOs.get_button(B1):
@@ -177,7 +199,27 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
+            state = "EDGE_R"
+
+    elif state == "EDGE_R":
+        if IOs.get_button(B1):
+            state = "AUTO"
+        if IOs.get_button(B2):
+            state = "SEMI"
+        if IOs.get_button(B3):
+            state = "MANUAL_L"
+        if IOs.get_button(B4):
+            state = "EDGE_L"
+        if IOs.get_button(B5):
             pass
+        if IOs.get_button(B6):
+            pass
+        if IOs.get_button(B7):
+            pass
+        if IOs.get_button(B8):
+            pass
+        if IOs.get_button(B9):
+            state = "EDGE_L"
         
     if state != oldstate:
         soll_links = 0
