@@ -10,6 +10,10 @@ Anschliessend kann mit der folgenden Eingabe die CAN-Verbindung geprüft werden,
 ```
 candump can0
 ```
+Zum Testen der Verbindung für ausgehende Nachrichten kann mit dem folgenden Befehl ein Datenpaket gesendet werden:
+```
+cansend can0 01a#1234
+```
 
 
 ## Aufsetzen SPI
