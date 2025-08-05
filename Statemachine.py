@@ -25,6 +25,7 @@ vend_soll = 0
 cnt_vend = 0
 
 state = "INIT"
+debounce_flag = False
 
 def get_soll():
     global soll_links, soll_rechts
@@ -39,8 +40,8 @@ def get_state():
     global soll_links, soll_rechts
     global vend_soll
     global cnt_vend
+    global debounce_flag
     oldstate = state
-    debounce_flag = False
 
     if state == "INIT":
         if IOs.get_button(B1):
