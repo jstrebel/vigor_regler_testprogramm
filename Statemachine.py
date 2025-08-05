@@ -79,6 +79,7 @@ def get_state():
             cnt_vend += 1
             if cnt_vend > 30:   # 3s at 100ms
                 state = "MANUAL_L"
+                debounce_flag = True
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
@@ -94,13 +95,15 @@ def get_state():
         if IOs.get_button(B9):
             soll_links = 0
 
-        if cnt_vend < 5:
+        if cnt_vend < 5 and not debounce_flag:
             IOs.set_led(L4, True)
-        else:
+        elif cnt_vend >= 5 and not debounce_flag:
             if cnt_vend % 2:
                 IOs.set_led(L4, True)
             else:
                 IOs.set_led(L7, True)
+        else:
+            IOs.set_led(L3, True)
 
     elif state == "MANUAL_L":
         if IOs.get_button(B1):
