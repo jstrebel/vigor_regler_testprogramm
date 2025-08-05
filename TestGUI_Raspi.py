@@ -49,12 +49,12 @@ class SliderApp(QMainWindow):
         self.btn_ui_control.pressed.connect(self.ui_control)
 
         self.slider_left = QSlider()
-        self.slider_left.setRange(0, 100)
+        self.slider_left.setRange(0, 1000)
         self.slider_left.valueChanged.connect(self.update_reference)
         self.slider_left.setEnabled(ui_control)
 
         self.slider_right = QSlider()
-        self.slider_right.setRange(0, 100)
+        self.slider_right.setRange(0, 1000)
         self.slider_right.valueChanged.connect(self.update_reference)
         self.slider_right.setEnabled(ui_control)
 
