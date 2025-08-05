@@ -172,7 +172,7 @@ class SliderApp(QMainWindow):
             pos_prozent = 0
         elif pos_prozent > 100:
             pos_prozent = 100
-        return math.floor(pos_prozent / 5) * 5  # 5% Steps
+        return math.round(pos_prozent / 5) * 5  # 5% Steps
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
