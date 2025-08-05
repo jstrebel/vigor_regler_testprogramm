@@ -148,7 +148,7 @@ class SliderApp(QMainWindow):
                                   f"EEPROM Offset:\t\t{e[1]}\n" + \
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
-        
+        Statemachine.set_inverted(inversion[0])
         RedisAPI.set_value("hmi_pos_l", str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
         RedisAPI.set_value("hmi_pos_r", str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
@@ -162,10 +162,10 @@ class SliderApp(QMainWindow):
     def get_pos_prozent(self, pos, vend, inversion):
         if vend < 100:
             vend = 100
-        if vend > 923:
-            vend = 923
+        if vend > 910:
+            vend = 910
         if inversion:
-            pos_prozent = (923 - pos) / (923 - vend) * 100
+            pos_prozent = (910 - pos) / (910 - vend) * 100
         else: 
             pos_prozent = (pos - 100) / (vend - 100) * 100
         if pos_prozent < 0:

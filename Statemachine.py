@@ -24,7 +24,8 @@ soll_links = 0
 soll_rechts = 0
 vend_soll = 100
 cnt_vend = 0
-vend_curr = 923
+vend_curr = 910
+inverted = False
 
 state = "INIT"
 debounce_flag = False
@@ -45,10 +46,17 @@ def set_error():
 
 def set_vend_curr(vend):
     global vend_curr
-    if 100 <= vend <= 923:
+    if 100 <= vend <= 910:
         vend_curr = vend
     else:
-        raise ValueError("Vend must be between 100 and 923")
+        raise ValueError("Vend must be between 100 and 910")
+    
+def set_inverted(invert):
+    global inverted
+    if isinstance(invert, bool):
+        inverted = invert
+    else:
+        raise ValueError("Inversion must be a boolean value")
 
 def get_state():
     global state
@@ -56,7 +64,7 @@ def get_state():
     global vend_soll
     global cnt_vend
     global debounce_flag, cal_released_flag, lr_released_flag
-    global vend_curr
+    global vend_curr, inverted
     oldstate = state
 
     if state == "INIT":
@@ -100,7 +108,7 @@ def get_state():
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
-            if vend_soll < 923:
+            if vend_soll < 910:
                 vend_soll += 5
             cnt_vend = 0
         if IOs.get_button(B7):
@@ -108,7 +116,10 @@ def get_state():
                 vend_soll -= 5
             cnt_vend = 0
         if IOs.get_button(B8):
-            soll_links = int(vend_soll / vend_curr * 100)
+            if inverted: 
+                soll_links = round((910 - vend_soll) / (910 - vend_curr) * 100)
+            else:
+                soll_links = round((vend_soll - 100) / (vend_curr - 100) * 100)
         if IOs.get_button(B9):
             soll_links = 0
 
