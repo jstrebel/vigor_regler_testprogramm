@@ -22,7 +22,7 @@ L7 = 1
 
 soll_links = 0
 soll_rechts = 0
-vend_soll = 0
+vend_soll = 100
 cnt_vend = 0
 
 state = "INIT"
@@ -302,7 +302,6 @@ def get_state():
     if state != oldstate:
         soll_links = 0
         soll_rechts = 0
-        vend_soll = 0
         debounce_flag = True
         cnt_vend = 0
     return state
