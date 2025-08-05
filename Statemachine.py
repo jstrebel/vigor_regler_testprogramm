@@ -1,6 +1,5 @@
 import IOs
 
-# ACHTUNG B5 ist immer True und gesperrt da SPI0 blockiert
 B1 = 3
 B2 = 2
 B3 = 1
@@ -11,13 +10,13 @@ B7 = 5
 B8 = 6
 B9 = 7
 
-L1 = 0
-L2 = 1
-L3 = 2
-L4 = 3
-L5 = 4
-L6 = 5
-L7 = 6
+L1 = 5
+L2 = 4
+L3 = 3
+L4 = 6
+L5 = 2
+L6 = 0
+L7 = 1
 
 soll_links = 0
 soll_rechts = 0
