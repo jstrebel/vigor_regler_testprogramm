@@ -152,6 +152,7 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_pos_l", str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
         RedisAPI.set_value("hmi_pos_r", str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
+        Statemachine.set_vend_curr(a[0])
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
         RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
         if not ui_control:

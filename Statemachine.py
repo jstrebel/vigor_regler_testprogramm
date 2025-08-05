@@ -24,6 +24,7 @@ soll_links = 0
 soll_rechts = 0
 vend_soll = 100
 cnt_vend = 0
+vend_curr = 923
 
 state = "INIT"
 debounce_flag = False
@@ -42,12 +43,20 @@ def set_error():
     global state
     state = "ERROR"
 
+def set_vend_curr(vend):
+    global vend_curr
+    if 100 <= vend <= 923:
+        vend_curr = vend
+    else:
+        raise ValueError("Vend must be between 100 and 923")
+
 def get_state():
     global state
     global soll_links, soll_rechts
     global vend_soll
     global cnt_vend
     global debounce_flag, cal_released_flag, lr_released_flag
+    global vend_curr
     oldstate = state
 
     if state == "INIT":
@@ -99,7 +108,7 @@ def get_state():
                 vend_soll -= 5
             cnt_vend = 0
         if IOs.get_button(B8):
-            soll_links = int(vend_soll / 10)
+            soll_links = int(vend_soll / vend_curr * 100)
         if IOs.get_button(B9):
             soll_links = 0
 
