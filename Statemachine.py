@@ -91,7 +91,7 @@ def get_state():
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
-            if vend_soll < 900:
+            if vend_soll < 923:
                 vend_soll += 5
             cnt_vend = 0
         if IOs.get_button(B7):
