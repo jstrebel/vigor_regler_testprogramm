@@ -59,13 +59,7 @@ def get_state():
         if IOs.get_button(B9):
             state = "CALIB"
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+        IOs.set_led(L1, False)        
 
 
     elif state == "CALIB":
@@ -90,13 +84,7 @@ def get_state():
         if IOs.get_button(B9):
             soll_links = 0
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, True)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+        IOs.set_led(L4, True)        
         
 
     elif state == "MANUAL_L":
@@ -121,13 +109,8 @@ def get_state():
         if IOs.get_button(B9):
             state = "MANUAL_R"
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
         IOs.set_led(L3, True)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+        
 
     elif state == "MANUAL_R":
         if IOs.get_button(B1):
@@ -151,13 +134,8 @@ def get_state():
         if IOs.get_button(B9):
             state = "MANUAL_L"
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
         IOs.set_led(L3, True)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+
 
     elif state == "ERROR":
         if IOs.get_button(B1):
@@ -179,13 +157,8 @@ def get_state():
         if IOs.get_button(B9):
             pass
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
         IOs.set_led(L6, True)
-        IOs.set_led(L7, False)
+
 
     elif state == "SEMI":
         if IOs.get_button(B1):
@@ -209,13 +182,8 @@ def get_state():
         if IOs.get_button(B9):
             pass
 
-        IOs.set_led(L1, False)
         IOs.set_led(L2, True)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+
 
     elif state == "AUTO":
         if IOs.get_button(B1):
@@ -238,12 +206,7 @@ def get_state():
             pass
 
         IOs.set_led(L1, True)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
-        IOs.set_led(L5, False)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+
 
     elif state == "EDGE_L":
         if IOs.get_button(B1):
@@ -265,13 +228,8 @@ def get_state():
         if IOs.get_button(B9):
             state = "EDGE_R"
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
         IOs.set_led(L5, True)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+
 
     elif state == "EDGE_R":
         if IOs.get_button(B1):
@@ -293,13 +251,8 @@ def get_state():
         if IOs.get_button(B9):
             state = "EDGE_L"
 
-        IOs.set_led(L1, False)
-        IOs.set_led(L2, False)
-        IOs.set_led(L3, False)
-        IOs.set_led(L4, False)
         IOs.set_led(L5, True)
-        IOs.set_led(L6, False)
-        IOs.set_led(L7, False)
+
         
     if state != oldstate:
         soll_links = 0
