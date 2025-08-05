@@ -261,6 +261,8 @@ def get_state():
         if IOs.get_button(B9):
             pass
 
+        soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
         IOs.set_led(L1, True)
 
 
@@ -287,6 +289,8 @@ def get_state():
                 lr_released_flag = False
         else:
             lr_released_flag = True
+
+        soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
         IOs.set_led(L5, True)
 
 
@@ -313,6 +317,8 @@ def get_state():
                 lr_released_flag = False
         else:
             lr_released_flag = True
+
+        soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
         IOs.set_led(L5, True)
 
     if debounce_flag:
