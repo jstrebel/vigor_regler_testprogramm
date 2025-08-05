@@ -1,5 +1,4 @@
 import sys
-import math
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
 import MotorAPI
@@ -172,7 +171,7 @@ class SliderApp(QMainWindow):
             pos_prozent = 0
         elif pos_prozent > 100:
             pos_prozent = 100
-        return math.round(pos_prozent / 5) * 5  # 5% Steps
+        return round(pos_prozent / 5) * 5  # 5% Steps
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
