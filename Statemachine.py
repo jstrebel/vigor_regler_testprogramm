@@ -27,6 +27,7 @@ cnt_vend = 0
 state = "INIT"
 debounce_flag = False
 cal_released_flag = False
+lr_released_flag = False
 
 def get_soll():
     global soll_links, soll_rechts
@@ -41,7 +42,7 @@ def get_state():
     global soll_links, soll_rechts
     global vend_soll
     global cnt_vend
-    global debounce_flag, cal_released_flag
+    global debounce_flag, cal_released_flag, lr_released_flag
     oldstate = state
 
     if state == "INIT":
@@ -127,8 +128,11 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            state = "MANUAL_R"
-
+            if lr_released_flag:
+                state = "MANUAL_R"
+                lr_released_flag = False
+        else:
+            lr_released_flag = True
         IOs.set_led(L3, True)
         
 
@@ -152,8 +156,11 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            state = "MANUAL_L"
-
+            if lr_released_flag:
+                state = "MANUAL_L"
+                lr_released_flag = False
+        else:
+            lr_released_flag = True
         IOs.set_led(L3, True)
 
 
@@ -246,8 +253,11 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            state = "EDGE_R"
-
+            if lr_released_flag:
+                state = "EDGE_R"
+                lr_released_flag = False
+        else:
+            lr_released_flag = True
         IOs.set_led(L5, True)
 
 
@@ -269,8 +279,11 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            state = "EDGE_L"
-
+            if lr_released_flag:
+                state = "EDGE_L"
+                lr_released_flag = False
+        else:
+            lr_released_flag = True
         IOs.set_led(L5, True)
 
     if debounce_flag:
