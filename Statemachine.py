@@ -66,27 +66,35 @@ def get_state():
     elif state == "CALIB":
         if IOs.get_button(B1):
             state = "AUTO"
+            cnt_vend = 0
         if IOs.get_button(B2):
             state = "SEMI"
+            cnt_vend = 0
         if IOs.get_button(B3):
             state = "MANUAL_L"
+            cnt_vend = 0
         if IOs.get_button(B4):
             state = "EDGE_L"
+            cnt_vend = 0
         if IOs.get_button(B5):
             cnt_vend += 1
-            if cnt_vend > 5:
-                cnt_vend = 0
+            if cnt_vend > 50:
+                cnt_vend = -10
                 state = "MANUAL_L"
         if IOs.get_button(B6):
             if vend_soll < 900:
                 vend_soll += 50
+            cnt_vend = 0
         if IOs.get_button(B7):
             if vend_soll > 100:
                 vend_soll -= 50
+            cnt_vend = 0
         if IOs.get_button(B8):
             soll_links = int(vend_soll / 10)
+            cnt_vend = 0
         if IOs.get_button(B9):
             soll_links = 0
+            cnt_vend = 0
 
         if cnt_vend % 2:
             IOs.set_led(L4, True)
@@ -103,7 +111,8 @@ def get_state():
         if IOs.get_button(B4):
             state = "EDGE_L"
         if IOs.get_button(B5):
-            state = "CALIB"
+            if cnt_vend > 0:
+                state = "CALIB"
         if IOs.get_button(B6):
             if soll_links < 100:
                 soll_links += 5
@@ -264,5 +273,4 @@ def get_state():
         soll_links = 0
         soll_rechts = 0
         vend_soll = 0
-        cnt_vend = 0
     return state
