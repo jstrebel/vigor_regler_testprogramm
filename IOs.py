@@ -4,33 +4,66 @@
 from gpiozero import DigitalOutputDevice
 from gpiozero import DigitalInputDevice
 
-s0 = DigitalOutputDevice(0)
-s1 = DigitalOutputDevice(1)
-s2 = DigitalOutputDevice(4)
+ti1_s0 = DigitalOutputDevice(0) # pin 27
+ti1_s1 = DigitalOutputDevice(1) # pin 28
+ti1_s2 = DigitalOutputDevice(4) # pin 7
+ti1_a = DigitalInputDevice(5) # pin 29
 
-s02 = DigitalOutputDevice(6)
+ti2_s0 = DigitalOutputDevice(6) # pin 31
+ti2_s1 = DigitalOutputDevice(23) # pin 16
+ti2_s2 = DigitalOutputDevice(22) # pin 15
+ti2_a = DigitalInputDevice(12) # pin 32
 
-a = DigitalInputDevice(5)
-a2 = DigitalInputDevice(12)
+led_s0 = DigitalOutputDevice(13) # pin 33
+led_s1 = DigitalOutputDevice(17) # pin 11
+led_s2 = DigitalOutputDevice(18) # pin 12
+led_a = DigitalOutputDevice(27) # pin 13
 
-def set_mux(i):
+def set_mux_ti1(i):
     if not 0 <= i <= 7:
         raise ValueError()
     # Convert i to 3-bit binary string and reverse (LSB to MSB)
     bits = [int(b) for b in f"{i:03b}"][::-1]  # s0 = LSB
 
-    s0.value = bits[0]
-    s1.value = bits[1]
-    s2.value = bits[2]
+    ti1_s0.value = bits[0]
+    ti1_s1.value = bits[1]
+    ti1_s2.value = bits[2]
+
+def set_mux_ti2(i):
+    if not 8 <= i <= 15:
+        raise ValueError()
+    # Convert i to 3-bit binary string and reverse (LSB to MSB)
+    bits = [int(b) for b in f"{i:03b}"][::-1]  # s0 = LSB
+
+    ti2_s0.value = bits[0]
+    ti2_s1.value = bits[1]
+    ti2_s2.value = bits[2]
+
+def set_mux_led(i):
+    if not 0 <= i <= 7:
+        raise ValueError()
+    # Convert i to 3-bit binary string and reverse (LSB to MSB)
+    bits = [int(b) for b in f"{i:03b}"][::-1]  # s0 = LSB
+
+    led_s0.value = bits[0]
+    led_s1.value = bits[1]
+    led_s2.value = bits[2]
 
 def get_button(i):
-    if not 0 <= i <= 8:
+    if not 0 <= i <= 15:
         raise ValueError()
     if i < 8:
-        set_mux(i)
-        return not a.is_active
+        set_mux_ti1(i)
+        return not ti1_a.is_active
     else:
-        s02.value = 0
-        return not a2.is_active
-        
-        
+        set_mux_ti2(i - 8)
+        return not ti2_a.is_active
+
+def set_led(i, state):
+    if not 0 <= i <= 7:
+        raise ValueError()
+    set_mux_led(i)
+    if state:
+        led_a.on()
+    else:
+        led_a.off()
