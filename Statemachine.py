@@ -59,6 +59,7 @@ def get_state():
             state = "MANUAL_L"
         if IOs.get_button(B9):
             state = "CALIB"
+            cnt_vend = 0
 
         IOs.set_led(L7, True)
 
@@ -66,19 +67,15 @@ def get_state():
     elif state == "CALIB":
         if IOs.get_button(B1):
             state = "AUTO"
-            cnt_vend = 0
         if IOs.get_button(B2):
             state = "SEMI"
-            cnt_vend = 0
         if IOs.get_button(B3):
             state = "MANUAL_L"
-            cnt_vend = 0
         if IOs.get_button(B4):
             state = "EDGE_L"
-            cnt_vend = 0
         if IOs.get_button(B5):
             cnt_vend += 1
-            if cnt_vend > 50:
+            if cnt_vend > 30:   # 3s at 100ms
                 cnt_vend = -10
                 state = "MANUAL_L"
         if IOs.get_button(B6):
@@ -113,6 +110,8 @@ def get_state():
         if IOs.get_button(B5):
             if cnt_vend > 0:
                 state = "CALIB"
+            else: 
+                cnt_vend += 1
         if IOs.get_button(B6):
             if soll_links < 100:
                 soll_links += 5
@@ -138,6 +137,7 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend = 0
         if IOs.get_button(B6):
             if soll_rechts < 100:
                 soll_rechts += 5
@@ -186,6 +186,7 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend = 0
         if IOs.get_button(B6):
             soll_links = 100
             soll_rechts = 100
@@ -211,6 +212,7 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend = 0
         if IOs.get_button(B6):
             pass
         if IOs.get_button(B7):
@@ -234,6 +236,7 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend = 0
         if IOs.get_button(B6):
             pass
         if IOs.get_button(B7):
@@ -257,6 +260,7 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend = 0
         if IOs.get_button(B6):
             pass
         if IOs.get_button(B7):
