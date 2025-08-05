@@ -1,4 +1,5 @@
 import IOs
+import time
 
 B1 = 3
 B2 = 2
@@ -277,4 +278,5 @@ def get_state():
         soll_links = 0
         soll_rechts = 0
         vend_soll = 0
+        time.sleep(0.5)  # Debounce delay
     return state
