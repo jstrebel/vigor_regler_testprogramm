@@ -189,6 +189,8 @@ def get_state():
         if IOs.get_button(B9):
             state = "MANUAL_L"
             lr_released_flag = False
+            MotorAPI.reset_errors()
+            MotorAPI.reset_state()
 
         IOs.set_led(L6, True)
 
@@ -287,8 +289,6 @@ def get_state():
         if IOs.get_button(B9):
             if lr_released_flag:
                 state = "EDGE_L"
-                MotorAPI.reset_errors()
-                MotorAPI.reset_state()
                 lr_released_flag = False
         else:
             lr_released_flag = True
