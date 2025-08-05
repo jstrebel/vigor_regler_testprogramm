@@ -41,7 +41,7 @@ def get_state():
     global soll_links, soll_rechts
     global vend_soll
     global cnt_vend
-    global debounce_flag
+    global debounce_flag, cal_released_flag
     oldstate = state
 
     if state == "INIT":
