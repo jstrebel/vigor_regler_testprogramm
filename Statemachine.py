@@ -276,6 +276,8 @@ def get_state():
 
 
     elif state == "EDGE_L":
+        geo_l = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        
         if IOs.get_button(B1):
             state = "AUTO"
         if IOs.get_button(B2):
@@ -287,9 +289,9 @@ def get_state():
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            pass
+            soll_links = geo_l
         if IOs.get_button(B7):
-            pass
+            soll_links = 0
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -299,12 +301,12 @@ def get_state():
         else:
             lr_released_flag = True
 
-        soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
-        geo_l = soll_links
         IOs.set_led(L5, True)
 
 
     elif state == "EDGE_R":
+        geo_r = MotorAPI.read_can(MotorAPI.reg_geo_r)
+
         if IOs.get_button(B1):
             state = "AUTO"
         if IOs.get_button(B2):
@@ -316,9 +318,9 @@ def get_state():
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            pass
+            soll_rechts = geo_r
         if IOs.get_button(B7):
-            pass
+            soll_rechts = 0
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -328,8 +330,6 @@ def get_state():
         else:
             lr_released_flag = True
 
-        soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
-        geo_r = soll_rechts
         IOs.set_led(L5, True)
 
     if debounce_flag:
