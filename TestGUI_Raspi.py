@@ -130,6 +130,9 @@ class SliderApp(QMainWindow):
         watchdogs = MotorAPI.get_watchdogs(status=status)
         inversion = MotorAPI.get_inversion(status=status)
         e = MotorAPI.get_eeprom_state()
+        if state == "Fehler":
+            Statemachine.set_error()
+            # set Redis error text
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \

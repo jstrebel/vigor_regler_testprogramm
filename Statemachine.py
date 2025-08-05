@@ -37,6 +37,10 @@ def get_vend_soll():
     global vend_soll
     return vend_soll
 
+def set_error():
+    global state
+    state = "ERROR"
+
 def get_state():
     global state
     global soll_links, soll_rechts
@@ -182,7 +186,8 @@ def get_state():
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
-            pass
+            state = "MANUAL_L"
+            lr_released_flag = False
 
         IOs.set_led(L6, True)
 
