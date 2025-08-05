@@ -1,5 +1,4 @@
 import IOs
-import time
 
 B1 = 3
 B2 = 2
@@ -74,10 +73,7 @@ def get_state():
         if IOs.get_button(B4):
             state = "EDGE_L"
         if IOs.get_button(B5):
-            state = "CALIB"
             cnt_vend += 1
-            IOs.set_led(L7, True)
-            time.sleep(0.1)
             if cnt_vend > 5:
                 cnt_vend = 0
                 state = "MANUAL_L"
@@ -92,8 +88,10 @@ def get_state():
         if IOs.get_button(B9):
             soll_links = 0
 
-        IOs.set_led(L4, True)        
-        
+        if cnt_vend % 2:
+            IOs.set_led(L4, True)
+        else:
+            IOs.set_led(L7, True)
 
     elif state == "MANUAL_L":
         if IOs.get_button(B1):

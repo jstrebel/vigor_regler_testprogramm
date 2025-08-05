@@ -95,7 +95,7 @@ class SliderApp(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
-        self.timer.start(500)  # Alle 100 Millisekunden
+        self.timer.start(1000)  # Alle 1000 Millisekunden
         RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
         Statemachine.soll_vend = MotorAPI.get_vend()[0]
         RedisAPI.set_value("hmi_state", "INIT")
