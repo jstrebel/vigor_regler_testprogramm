@@ -87,6 +87,7 @@ def get_state():
             if cnt_vend > 30:   # 3s at 100ms
                 state = "MANUAL_L"
                 cal_released_flag = False
+                MotorAPI.set_vend(vend_soll, vend_soll)
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
