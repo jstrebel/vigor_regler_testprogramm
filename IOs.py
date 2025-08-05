@@ -33,6 +33,7 @@ def set_mux_ti2(i):
     if not 8 <= i <= 15:
         raise ValueError()
     # Convert i to 3-bit binary string and reverse (LSB to MSB)
+    i -= 8  # Adjust index for ti2
     bits = [int(b) for b in f"{i:03b}"][::-1]  # s0 = LSB
 
     ti2_s0.value = bits[0]
@@ -56,7 +57,7 @@ def get_button(i):
         set_mux_ti1(i)
         return not ti1_a.is_active
     else:
-        set_mux_ti2(i - 8)
+        set_mux_ti2(i)
         return not ti2_a.is_active
 
 def set_led(i, state):
