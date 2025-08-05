@@ -8,6 +8,7 @@ import Statemachine
 
 class SliderApp(QMainWindow):
     def __init__(self):
+        global ui_control
         super().__init__()
 
         self.setWindowTitle("TestGUI_Raspi")
@@ -45,13 +46,18 @@ class SliderApp(QMainWindow):
         self.reset_s = QPushButton("Controllerstate zurücksetzen")
         self.reset_s.pressed.connect(self.reset_state)
 
+        self.btn_ui_control = QPushButton("UI Control OFF")
+        self.btn_ui_control.pressed.connect(self.ui_control)
+
         self.slider_left = QSlider()
         self.slider_left.setRange(0, 100)
         self.slider_left.valueChanged.connect(self.update_reference)
+        self.slider_left.setEnabled(ui_control)
 
         self.slider_right = QSlider()
         self.slider_right.setRange(0, 100)
         self.slider_right.valueChanged.connect(self.update_reference)
+        self.slider_right.setEnabled(ui_control)
 
         self.text_left = QLabel("Motor links:\n" + \
                                 "Inverted:\t\tFalse\n" + \
@@ -77,6 +83,7 @@ class SliderApp(QMainWindow):
         stackm1.addWidget(self.text_left)
         stackm1.addWidget(self.spin_vend_left)
 
+        stackm2.addWidget(self.btn_ui_control)
         stackm2.addWidget(self.text_right)
         stackm2.addWidget(self.spin_vend_right)
 
@@ -145,7 +152,7 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         RedisAPI.set_value("hmi_state", Statemachine.get_state())
         RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
-        if True:
+        if not ui_control:
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
 
@@ -170,7 +177,21 @@ class SliderApp(QMainWindow):
     def reset_state(self):
         MotorAPI.reset_state()
 
+    def ui_control(self):
+        global ui_control
+        if not ui_control:
+            self.btn_ui_control.setText("UI Control ON")
+            ui_control = True
+            self.slider_left.setEnabled(True)
+            self.slider_right.setEnabled(True)
+        else:
+            self.btn_ui_control.setText("UI Control OFF")
+            ui_control = False
+            self.slider_left.setEnabled(False)
+            self.slider_right.setEnabled(False)
+
 if __name__ == '__main__':
+    ui_control = False  # Global variable to control UI state
     app = QApplication(sys.argv)
     window = SliderApp()
     window.show()

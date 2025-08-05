@@ -58,7 +58,7 @@ def get_state():
         if IOs.get_button(B9):
             state = "CALIB"
 
-        IOs.set_led(L1, False)        
+        IOs.set_led(L1, True)
 
 
     elif state == "CALIB":
