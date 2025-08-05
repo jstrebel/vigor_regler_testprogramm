@@ -249,6 +249,9 @@ def get_state():
 
 
     elif state == "AUTO":
+        geo_l = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        geo_r = MotorAPI.read_can(MotorAPI.reg_geo_r)
+
         if IOs.get_button(B1):
             state = "AUTO"
         if IOs.get_button(B2):
@@ -260,18 +263,16 @@ def get_state():
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            pass
+            soll_links = geo_l
+            soll_rechts = geo_r
         if IOs.get_button(B7):
-            pass
+            soll_links = 0
+            soll_rechts = 0
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
             pass
 
-        soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
-        geo_l = soll_links
-        soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
-        geo_r = soll_rechts
         IOs.set_led(L1, True)
 
 
