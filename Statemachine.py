@@ -21,7 +21,9 @@ L6 = 0
 L7 = 1
 
 soll_links = 0
+geo_l = 0
 soll_rechts = 0
+geo_r = 0
 vend_soll = 100
 cnt_vend = 0
 vend_curr = 910
@@ -35,6 +37,10 @@ lr_released_flag = False
 def get_soll():
     global soll_links, soll_rechts
     return soll_links, soll_rechts
+
+def get_geo():
+    global geo_l, geo_r
+    return geo_l, geo_r
 
 def get_vend_soll():
     global vend_soll
@@ -65,6 +71,7 @@ def get_state():
     global cnt_vend
     global debounce_flag, cal_released_flag, lr_released_flag
     global vend_curr, inverted
+    global geo_l, geo_r
     oldstate = state
 
     if state == "INIT":
@@ -262,7 +269,9 @@ def get_state():
             pass
 
         soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        geo_l = soll_links
         soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
+        geo_r = soll_rechts
         IOs.set_led(L1, True)
 
 
@@ -291,6 +300,7 @@ def get_state():
             lr_released_flag = True
 
         soll_links = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        geo_l = soll_links
         IOs.set_led(L5, True)
 
 
@@ -319,6 +329,7 @@ def get_state():
             lr_released_flag = True
 
         soll_rechts = MotorAPI.read_can(MotorAPI.reg_geo_r)
+        geo_r = soll_rechts
         IOs.set_led(L5, True)
 
     if debounce_flag:

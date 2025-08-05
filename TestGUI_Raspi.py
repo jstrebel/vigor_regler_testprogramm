@@ -131,7 +131,7 @@ class SliderApp(QMainWindow):
         e = MotorAPI.get_eeprom_state()
         if state == "Fehler":
             Statemachine.set_error()
-            # set Redis error text
+            # TODO set Redis error text
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
@@ -153,11 +153,15 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_pos_r", str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         Statemachine.set_vend_curr(a[0])
-        RedisAPI.set_value("hmi_state", Statemachine.get_state())
+        statemachine_state = Statemachine.get_state()
+        RedisAPI.set_value("hmi_state", statemachine_state)
         RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
         if not ui_control:
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
+        if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R":
+            RedisAPI.set_value("hmi_soll_l", str(Statemachine.get_geo()[0]) + "%")
+            RedisAPI.set_value("hmi_soll_r", str(Statemachine.get_geo()[1]) + "%")
 
     def get_pos_prozent(self, pos, vend, inversion):
         if vend < 100:
