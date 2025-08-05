@@ -40,6 +40,7 @@ def get_state():
     global vend_soll
     global cnt_vend
     oldstate = state
+    debounce_flag = False
 
     if state == "INIT":
         if IOs.get_button(B1):
@@ -79,6 +80,8 @@ def get_state():
             if cnt_vend > 30:   # 3s at 100ms
                 cnt_vend = -10
                 state = "MANUAL_L"
+        else:
+            cnt_vend = 0
         if IOs.get_button(B6):
             if vend_soll < 900:
                 vend_soll += 50
@@ -273,10 +276,13 @@ def get_state():
 
         IOs.set_led(L5, True)
 
+    if debounce_flag:
+        time.sleep(0.5)  # Debounce delay
+        debounce_flag = False
         
     if state != oldstate:
         soll_links = 0
         soll_rechts = 0
         vend_soll = 0
-        time.sleep(0.5)  # Debounce delay
+        debounce_flag = True
     return state
