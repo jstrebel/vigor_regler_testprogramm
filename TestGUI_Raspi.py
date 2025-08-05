@@ -159,7 +159,7 @@ class SliderApp(QMainWindow):
         if not ui_control:
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
-        if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R":
+        if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R" or statemachine_state == "AUTO":
             RedisAPI.set_value("hmi_soll_l", str(Statemachine.get_geo()[0]) + "%")
             RedisAPI.set_value("hmi_soll_r", str(Statemachine.get_geo()[1]) + "%")
 
