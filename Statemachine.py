@@ -21,6 +21,7 @@ L7 = 1
 soll_links = 0
 soll_rechts = 0
 vend_soll = 0
+cnt_vend = 0
 
 state = "INIT"
 
@@ -36,6 +37,7 @@ def get_state():
     global state
     global soll_links, soll_rechts
     global vend_soll
+    global cnt_vend
     oldstate = state
 
     if state == "INIT":
@@ -72,6 +74,11 @@ def get_state():
             state = "EDGE_L"
         if IOs.get_button(B5):
             state = "CALIB"
+            cnt_vend += 1
+            IOs.set_led(L1, True)
+            if cnt_vend > 5:
+                cnt_vend = 0
+                state = "MANUAL_L"
         if IOs.get_button(B6):
             if vend_soll < 900:
                 vend_soll += 50
