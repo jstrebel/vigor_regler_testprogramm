@@ -91,11 +91,11 @@ def get_state():
             cnt_vend = 0
         if IOs.get_button(B6):
             if vend_soll < 900:
-                vend_soll += 50
+                vend_soll += 5
             cnt_vend = 0
         if IOs.get_button(B7):
             if vend_soll > 100:
-                vend_soll -= 50
+                vend_soll -= 5
             cnt_vend = 0
         if IOs.get_button(B8):
             soll_links = int(vend_soll / 10)
