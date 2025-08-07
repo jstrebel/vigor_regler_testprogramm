@@ -117,20 +117,20 @@ def get_state():
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
-            if vend_soll < 910:
-                vend_soll += 5
-            cnt_vend = 0
-        if IOs.get_button(B7):
-            if vend_soll > 100:
-                vend_soll -= 5
-            cnt_vend = 0
-        if IOs.get_button(B8):
             if inverted: 
                 soll_links = round((910 - vend_soll) / (910 - vend_curr) * 100)
             else:
                 soll_links = round((vend_soll - 100) / (vend_curr - 100) * 100)
-        if IOs.get_button(B9):
+        if IOs.get_button(B7):
             soll_links = 0
+        if IOs.get_button(B8):
+            if vend_soll < 910:
+                vend_soll += 5
+            cnt_vend = 0
+        if IOs.get_button(B9):
+            if vend_soll > 100:
+                vend_soll -= 5
+            cnt_vend = 0
 
         if cnt_vend < 10:
             IOs.set_led(L4, True)
@@ -139,6 +139,7 @@ def get_state():
                 IOs.set_led(L4, True)
             else:
                 IOs.set_led(L7, True)
+
 
     elif state == "MANUAL_L":
         if IOs.get_button(B1):
