@@ -163,7 +163,7 @@ After=can0.service
 [Service]
 Type=simple
 User=hbraspi
-WorkingDirectory=/home/hbraspi/Desktop/forked_Repos/Vigor.../examples
+WorkingDirectory=/home/hbraspi/Desktop/forked_Repos/Vigor_TFT_Display/examples
 ExecStart=/usr/bin/make run
 Restart=on-failure
 
