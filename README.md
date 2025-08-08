@@ -101,3 +101,76 @@ ADR  LSB  MSB
 0x10 0xSS 0xSS
 0x20 0xTT 0xTT
 ```
+
+
+## Autostart
+### CAN Service
+1️⃣ Systemd service to bring up CAN at boot
+Create the service:
+```
+sudo nano /etc/systemd/system/can0.service
+```
+Put this inside:
+```
+[Unit]
+Description=Setup CAN interface can0
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/ip link set can0 up type can bitrate 125000
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+Enable and start it:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable can0.service
+sudo systemctl start can0.service
+```
+Now can0 will be configured before your GUI starts.
+
+### GUI
+2️⃣ Launch GUI when LXDE desktop starts
+LXDE autostart files live here for the Pi’s default desktop:
+```
+/home/hbraspi/.config/lxsession/LXDE-pi/autostart
+```
+If it doesn’t exist, create it:
+```
+mkdir -p /home/hbraspi/.config/lxsession/LXDE-pi
+nano /home/hbraspi/.config/lxsession/LXDE-pi/autostart
+```
+Add a line like this at the bottom:
+```
+@bash -c "cd /home/hbraspi/Desktop/vigor_regler_testprogramm && source .venv/bin/activate && python TestGUI_Raspi.py"
+```
+
+### Bildschirm
+3️⃣ Starting the Vigor make run task
+Since this one seems like it’s terminal-based and not GUI, we can make it another systemd service:
+```
+sudo nano /etc/systemd/system/vigor.service
+```
+
+```
+[Unit]
+Description=Run Vigor Example
+After=can0.service
+
+[Service]
+Type=simple
+User=hbraspi
+WorkingDirectory=/home/hbraspi/Desktop/forked_Repos/Vigor.../examples
+ExecStart=/usr/bin/make run
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+Enable it:
+```
+sudo systemctl enable vigor.service
+```
