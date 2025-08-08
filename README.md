@@ -133,19 +133,40 @@ sudo systemctl start can0.service
 Now can0 will be configured before your GUI starts.
 
 ### GUI
-2️⃣ Launch GUI when LXDE desktop starts
-LXDE autostart files live here for the Pi’s default desktop:
+Option 1 – Keep the GUI as a desktop app
+Let Raspberry Pi OS boot into the graphical desktop automatically (even if no monitor is plugged in).
+Your PyQt5 GUI will always have an X server running to draw on.
+If you later plug in an HDMI monitor, you’ll instantly see the window.
+Startup order still works — we just make the systemd service run inside your autologged-in X session.
+
+Create a systemd user service (not system-wide) so it runs inside X:
 ```
-/home/hbraspi/.config/lxsession/LXDE-pi/autostart
+mkdir -p /home/hbraspi/.config/systemd/user
+nano /home/hbraspi/.config/systemd/user/vigor_gui.service
 ```
-If it doesn’t exist, create it:
+Paste:
+
 ```
-mkdir -p /home/hbraspi/.config/lxsession/LXDE-pi
-nano /home/hbraspi/.config/lxsession/LXDE-pi/autostart
+[Unit]
+Description=Start Vigor GUI
+After=can0.service
+Requires=can0.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hbraspi/Desktop/vigor_regler_testprogramm
+ExecStart=/bin/bash -c "source .venv/bin/activate && python TestGUI_Raspi.py"
+Restart=on-failure
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/hbraspi/.Xauthority
+
+[Install]
+WantedBy=default.target
 ```
-Add a line like this at the bottom:
+Enable it for your user:
 ```
-@bash -c "cd /home/hbraspi/Desktop/vigor_regler_testprogramm && source .venv/bin/activate && python TestGUI_Raspi.py"
+systemctl --user daemon-reload
+systemctl --user enable vigor_gui.service
 ```
 
 ### Bildschirm
