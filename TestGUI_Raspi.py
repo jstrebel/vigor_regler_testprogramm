@@ -103,8 +103,8 @@ class SliderApp(QMainWindow):
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
-        RedisAPI.set_value("hmi_soll_l", str(self.slider_left.value()) + "%")
-        RedisAPI.set_value("hmi_soll_r", str(self.slider_right.value()) + "%")
+        RedisAPI.set_value("hmi_soll_l", self.get_str(self.slider_left.value()) + "%")
+        RedisAPI.set_value("hmi_soll_r", self.get_str(self.slider_right.value()) + "%")
 
     def update(self):
         MotorAPI.send_heartbeat()
@@ -149,8 +149,8 @@ class SliderApp(QMainWindow):
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
         Statemachine.set_inverted(inversion[0])
-        RedisAPI.set_value("hmi_pos_l", str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
-        RedisAPI.set_value("hmi_pos_r", str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
+        RedisAPI.set_value("hmi_pos_l", self.get_str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
+        RedisAPI.set_value("hmi_pos_r", self.get_str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
         RedisAPI.set_value("hmi_vend_ist", str(a[0]))
         Statemachine.set_vend_curr(a[0])
         statemachine_state = Statemachine.get_state()
@@ -160,8 +160,16 @@ class SliderApp(QMainWindow):
             self.slider_left.setValue(Statemachine.get_soll()[0])
             self.slider_right.setValue(Statemachine.get_soll()[1])
         if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R" or statemachine_state == "AUTO":
-            RedisAPI.set_value("hmi_soll_l", str(Statemachine.get_geo()[0]) + "%")
-            RedisAPI.set_value("hmi_soll_r", str(Statemachine.get_geo()[1]) + "%")
+            RedisAPI.set_value("hmi_soll_l", self.get_str(Statemachine.get_geo()[0]) + "%")
+            RedisAPI.set_value("hmi_soll_r", self.get_str(Statemachine.get_geo()[1]) + "%")
+
+    def get_str(self, num):
+        if num < 10:
+            return "  " + str(num)
+        elif num < 100:
+            return " " + str(num)
+        else:
+            return str(num)
 
     def get_pos_prozent(self, pos, vend, inversion):
         if vend < 100:
