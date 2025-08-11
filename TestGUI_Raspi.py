@@ -128,12 +128,13 @@ class SliderApp(QMainWindow):
         endstops = MotorAPI.get_endstops(status=status)
         watchdogs = MotorAPI.get_watchdogs(status=status)
         inversion = MotorAPI.get_inversion(status=status)
-        if MotorAPI.get_timeout(status=status):     # autoreset timeout errors
-            MotorAPI.reset_errors()
-            MotorAPI.reset_state()
         e = MotorAPI.get_eeprom_state()
         if state == "Fehler":
-            Statemachine.set_error()
+            if MotorAPI.get_timeout(status=status):     # autoreset timeout errors
+                MotorAPI.reset_errors()
+                MotorAPI.reset_state()
+            else:
+                Statemachine.set_error()
             # TODO set Redis error text
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
