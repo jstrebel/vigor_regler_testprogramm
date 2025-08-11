@@ -162,6 +162,9 @@ class SliderApp(QMainWindow):
         if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R" or statemachine_state == "AUTO":
             RedisAPI.set_value("hmi_soll_l", self.get_str(Statemachine.get_geo()[0]) + "%")
             RedisAPI.set_value("hmi_soll_r", self.get_str(Statemachine.get_geo()[1]) + "%")
+        if statemachine_state == "ERROR" and state != "Fehler":
+            Statemachine.set_state("INIT")
+
 
     def get_str(self, num):
         if num < 10:
