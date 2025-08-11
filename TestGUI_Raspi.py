@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
+from time.time import sleep
 import MotorAPI
 import RedisAPI
 import Statemachine
@@ -132,10 +133,11 @@ class SliderApp(QMainWindow):
         if state == "Fehler":
             if MotorAPI.get_timeout(status=status):     # autoreset timeout errors
                 MotorAPI.reset_errors()
+                sleep(0.1)
                 MotorAPI.reset_state()
             else:
                 Statemachine.set_error()
-            # TODO set Redis error text
+                # TODO set Redis error text
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
