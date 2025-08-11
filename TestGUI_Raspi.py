@@ -133,11 +133,13 @@ class SliderApp(QMainWindow):
         if state == "Fehler":
             if MotorAPI.get_timeout(status=status):     # autoreset timeout errors
                 #MotorAPI.reset_errors()
-                sleep(0.1)
-                MotorAPI.reset_state()
+                #sleep(0.1)
+                #MotorAPI.reset_state()
+                pass
             else:
                 Statemachine.set_error()
                 # TODO set Redis error text
+                RedisAPI.set_value("hmi_fehler", str(status))
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
