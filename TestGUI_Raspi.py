@@ -99,8 +99,6 @@ class SliderApp(QMainWindow):
         RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
         Statemachine.soll_vend = MotorAPI.get_vend()[0]
         RedisAPI.set_value("hmi_state", "INIT")
-        #MotorAPI.reset_errors()
-        #MotorAPI.reset_state()
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
@@ -131,15 +129,9 @@ class SliderApp(QMainWindow):
         inversion = MotorAPI.get_inversion(status=status)
         e = MotorAPI.get_eeprom_state()
         if state == "Fehler":
-            if MotorAPI.get_timeout(status=status):     # autoreset timeout errors
-                #MotorAPI.reset_errors()
-                #sleep(0.1)
-                #MotorAPI.reset_state()
-                pass
-            else:
-                Statemachine.set_error()
-                # TODO set Redis error text
-                RedisAPI.set_value("hmi_fehler", str(status))
+            Statemachine.set_error()
+            # TODO set Redis error text
+            RedisAPI.set_value("hmi_fehler", str(status))
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
