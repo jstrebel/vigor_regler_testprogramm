@@ -6,11 +6,11 @@ reg_status = 0x05
 reg_ref_l = 0x10
 reg_pos_l = 0x11
 reg_vend_l = 0x12
-reg_geo_l = 0x13    # TODO define geo registers and update vigor nano
+reg_geo_l = 0x13
 reg_ref_r = 0x20
 reg_pos_r = 0x21
 reg_vend_r = 0x22
-reg_geo_r = 0x23    # TODO define geo registers and update vigor nano
+reg_geo_r = 0x23
 reg_hb_in = 0x70
 reg_mem_cnt = 0x80
 reg_mem_off = 0x81
@@ -48,6 +48,12 @@ def get_watchdogs(status=None):
         status = get_status()
     watchdogs = [bool(status & 0b100000000000), bool(status & 0b10000000000), bool(status & 0b1000000000), bool(status & 0b100000000)]
     return watchdogs
+
+def get_timeout(status=None):
+    if status is None:
+        status = get_status()
+    timeout = bool(status & 0b100000000000000) or bool(status & 0b1000000000000000)
+    return timeout
 
 def get_inversion(status=None):
     if status is None:
