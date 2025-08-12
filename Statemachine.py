@@ -1,6 +1,7 @@
 import IOs
 import time
 import MotorAPI
+import RedisAPI
 
 B1 = 3
 B2 = 2
@@ -114,6 +115,7 @@ def get_state():
                 state = "MANUAL_L"
                 cal_released_flag = False
                 MotorAPI.set_vend(vend_soll, vend_soll)
+                RedisAPI.set_value("hmi_vend_ist", vend_soll)
         else:
             cnt_vend = 0
         if IOs.get_button(B6):
