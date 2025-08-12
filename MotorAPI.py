@@ -1,4 +1,4 @@
-import can 
+import CAN_Wrapper
 
 reg_heart = 0x01
 reg_heart_hb = 0x02
@@ -15,9 +15,10 @@ reg_hb_in = 0x70
 reg_mem_cnt = 0x80
 reg_mem_off = 0x81
 reg_cmd = 0x90
+reg_req_nano = 0x99
 
 def get_status():
-    return read_can(reg_status)
+    return CAN_Wrapper.read_can_2byte(reg_status, reg_req_nano)
 
 def get_state(numbers=False, status=None):
     if status is None:
@@ -62,63 +63,41 @@ def get_inversion(status=None):
     return inversion
 
 def get_pos():
-    pos_l = read_can(reg_pos_l)
-    pos_r = read_can(reg_pos_r)
+    pos_l = CAN_Wrapper.read_can_2byte(reg_pos_l, reg_req_nano)
+    pos_r = CAN_Wrapper.read_can_2byte(reg_pos_r, reg_req_nano)
     return [pos_l, pos_r]
 
 def get_eeprom_state():
-    mem_cnt = read_can(reg_mem_cnt)
-    mem_off = read_can(reg_mem_off)
+    mem_cnt = CAN_Wrapper.read_can_2byte(reg_mem_cnt, reg_req_nano)
+    mem_off = CAN_Wrapper.read_can_2byte(reg_mem_off, reg_req_nano)
     return [mem_cnt, mem_off]
 
 def set_vend(vend_l, vend_r):
-    write_can(reg_vend_l, vend_l)
-    write_can(reg_vend_r, vend_r)
-    write_can(reg_cmd, 0x01)
+    CAN_Wrapper.write_can(reg_vend_l, vend_l)
+    CAN_Wrapper.write_can(reg_vend_r, vend_r)
+    CAN_Wrapper.write_can(reg_cmd, 0x01)
     return
 
 def get_vend():
-    vend_l = read_can(reg_vend_l)
-    vend_r = read_can(reg_vend_r)
+    vend_l = CAN_Wrapper.read_can_2byte(reg_vend_l, reg_req_nano)
+    vend_r = CAN_Wrapper.read_can_2byte(reg_vend_r, reg_req_nano)
     return [vend_l, vend_r]
 
 def set_ref(ref_l, ref_r):
-    write_can(reg_ref_l, ref_l)
-    write_can(reg_ref_r, ref_r)
+    CAN_Wrapper.write_can(reg_ref_l, ref_l)
+    CAN_Wrapper.write_can(reg_ref_r, ref_r)
     return
 
 def reset_errors():
-    write_can(reg_cmd, 0x02)
+    CAN_Wrapper.write_can(reg_cmd, 0x02)
     return
 
 def reset_state():
-    write_can(reg_cmd, 0x04)
-    write_can(reg_hb_in, 0x04)
+    CAN_Wrapper.write_can(reg_cmd, 0x04)
+    CAN_Wrapper.write_can(reg_hb_in, 0x04)
     return
 
 def send_heartbeat(value=1000):
-    write_can(reg_heart, value)
-    write_can(reg_heart_hb, value)
+    CAN_Wrapper.write_can(reg_heart, value)
+    CAN_Wrapper.write_can(reg_heart_hb, value)
     return
-
-def read_can(reg_addr):
-    with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
-        try:
-            bus.send(can.Message(arbitration_id=0x99, data=[reg_addr, 0], is_extended_id=False))
-            for msg in bus:
-                if msg.arbitration_id == reg_addr:
-                    if len(msg.data) == 2:
-                        return msg.data[0] + msg.data[1]*256
-        except Exception as e:
-            print("Fehler beim Lesen")
-            print(e)
-            return 0
-
-def write_can(reg_addr, val):
-     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
-        msg = can.Message(arbitration_id=reg_addr, data=[val%256, (val//256)%256], is_extended_id=False)
-        try:
-            bus.send(msg)
-        except:
-            print("Fehler beim Schreiben")
-            return 0

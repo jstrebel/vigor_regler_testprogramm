@@ -4,6 +4,7 @@ from PyQt5.QtCore import QTimer
 from time import sleep
 import MotorAPI
 import RedisAPI
+import CM4API
 import Statemachine
 
 class SliderApp(QMainWindow):
@@ -161,6 +162,10 @@ class SliderApp(QMainWindow):
         if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R" or statemachine_state == "AUTO":
             RedisAPI.set_value("hmi_soll_l", self.get_str(Statemachine.get_geo()[0]) + "%")
             RedisAPI.set_value("hmi_soll_r", self.get_str(Statemachine.get_geo()[1]) + "%")
+            # TODO: set fieldname gps and speed
+            # RedisAPI.set_value("hmi_gps", CM4API.get_gps())
+            # RedisAPI.set_value("hmi_speed", CM4API.get_speed())
+            # RedisAPI.set_value("hmi_feldname", CM4API.get_feldname())
         if statemachine_state == "ERROR" and state != "Fehler":
             Statemachine.set_state("INIT")
 
