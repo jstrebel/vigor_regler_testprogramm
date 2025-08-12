@@ -278,15 +278,15 @@ def get_state():
         if enable_geo:
             soll_links = geo_l
             soll_rechts = geo_r
+            IOs.set_led(L1, True)
+        else:
+            soll_links = 0
+            soll_rechts = 0
             if not pause_bool:
                 IOs.set_led(L5, True)
             else:
                 IOs.set_led(L7, True)
             pause_bool = not pause_bool
-        else:
-            soll_links = 0
-            soll_rechts = 0
-            IOs.set_led(L1, True)
 
 
     elif state == "EDGE_L":
@@ -316,14 +316,15 @@ def get_state():
         geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_links = geo_l
+            IOs.set_led(L5, True)           
+        else:
+            soll_links = 0
             if not pause_bool:
                 IOs.set_led(L5, True)
             else:
                 IOs.set_led(L7, True)
             pause_bool = not pause_bool
-        else:
-            soll_links = 0
-            IOs.set_led(L5, True)
+
 
 
     elif state == "EDGE_R":
@@ -352,14 +353,15 @@ def get_state():
         geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_rechts = geo_r
+            IOs.set_led(L5, True)            
+        else:
+            soll_rechts = 0
             if not pause_bool:
                 IOs.set_led(L5, True)
             else:
                 IOs.set_led(L7, True)
             pause_bool = not pause_bool
-        else:
-            soll_rechts = 0
-            IOs.set_led(L5, True)
+
 
     if debounce_flag:
         time.sleep(0.5)  # Debounce delay
