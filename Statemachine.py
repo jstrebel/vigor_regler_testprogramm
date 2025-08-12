@@ -181,7 +181,7 @@ def get_state():
         if IOs.get_button(B2):
             state = "SEMI"
         if IOs.get_button(B3):
-            state = "MANUAL_L"
+            state = "MANUAL_R"
         if IOs.get_button(B4):
             state = "EDGE_L"
         if IOs.get_button(B5):
@@ -283,7 +283,7 @@ def get_state():
             soll_links = 0
             soll_rechts = 0
             if not pause_bool:
-                IOs.set_led(L5, True)
+                IOs.set_led(L1, True)
             else:
                 IOs.set_led(L7, True)
             pause_bool = not pause_bool
@@ -335,7 +335,7 @@ def get_state():
         if IOs.get_button(B3):
             state = "MANUAL_L"
         if IOs.get_button(B4):
-            state = "EDGE_L"
+            state = "EDGE_R"
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
