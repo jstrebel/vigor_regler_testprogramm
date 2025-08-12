@@ -34,7 +34,8 @@ state = "INIT"
 debounce_flag = False
 cal_released_flag = False
 lr_released_flag = False
-enable_geo = False
+enable_geo = True
+pause_bool = False
 
 def get_soll():
     global soll_links, soll_rechts
@@ -74,7 +75,7 @@ def get_state():
     global debounce_flag, cal_released_flag, lr_released_flag
     global vend_curr, inverted
     global geo_l, geo_r
-    global enable_geo
+    global enable_geo, pause_bool
     oldstate = state
 
     if state == "INIT":
@@ -277,10 +278,15 @@ def get_state():
         if enable_geo:
             soll_links = geo_l
             soll_rechts = geo_r
+            if not pause_bool:
+                IOs.set_led(L5, True)
+            else:
+                IOs.set_led(L7, True)
+            pause_bool = not pause_bool
         else:
             soll_links = 0
             soll_rechts = 0
-        IOs.set_led(L1, True)
+            IOs.set_led(L1, True)
 
 
     elif state == "EDGE_L":
@@ -310,9 +316,14 @@ def get_state():
         geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_links = geo_l
+            if not pause_bool:
+                IOs.set_led(L5, True)
+            else:
+                IOs.set_led(L7, True)
+            pause_bool = not pause_bool
         else:
             soll_links = 0
-        IOs.set_led(L5, True)
+            IOs.set_led(L5, True)
 
 
     elif state == "EDGE_R":
@@ -341,9 +352,14 @@ def get_state():
         geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_rechts = geo_r
+            if not pause_bool:
+                IOs.set_led(L5, True)
+            else:
+                IOs.set_led(L7, True)
+            pause_bool = not pause_bool
         else:
             soll_rechts = 0
-        IOs.set_led(L5, True)
+            IOs.set_led(L5, True)
 
     if debounce_flag:
         time.sleep(0.5)  # Debounce delay
@@ -353,6 +369,7 @@ def get_state():
         soll_links = 0
         soll_rechts = 0
         debounce_flag = True
-        enable_geo = False
+        enable_geo = True
+        pause_bool = False
         cnt_vend = 0
     return state
