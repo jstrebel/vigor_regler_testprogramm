@@ -273,8 +273,7 @@ def get_state():
         if IOs.get_button(B9):
             pass
 
-        geo_l = MotorAPI.read_can(MotorAPI.reg_geo_l)
-        geo_r = MotorAPI.read_can(MotorAPI.reg_geo_r)
+        geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_links = geo_l
             soll_rechts = geo_r
@@ -308,7 +307,7 @@ def get_state():
         else:
             lr_released_flag = True
 
-        geo_l = MotorAPI.read_can(MotorAPI.reg_geo_l)
+        geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_links = geo_l
         else:
@@ -339,7 +338,7 @@ def get_state():
                 lr_released_flag = False
         else:
             lr_released_flag = True
-        geo_r = MotorAPI.read_can(MotorAPI.reg_geo_r)
+        geo_l, geo_r = MotorAPI.get_geo()
         if enable_geo:
             soll_rechts = geo_r
         else:

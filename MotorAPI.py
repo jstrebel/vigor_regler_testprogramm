@@ -83,6 +83,11 @@ def get_vend():
     vend_r = CAN_Wrapper.read_can_2byte(reg_vend_r, reg_req_nano)
     return [vend_l, vend_r]
 
+def get_geo():
+    geo_l = CAN_Wrapper.read_can_2byte(reg_geo_l, reg_req_nano)
+    geo_r = CAN_Wrapper.read_can_2byte(reg_geo_r, reg_req_nano)
+    return [geo_l, geo_r]
+
 def set_ref(ref_l, ref_r):
     CAN_Wrapper.write_can(reg_ref_l, ref_l)
     CAN_Wrapper.write_can(reg_ref_r, ref_r)
