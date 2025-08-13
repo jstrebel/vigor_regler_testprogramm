@@ -48,7 +48,6 @@ if __name__ == "__main__":
             geo_r = data.get("right_rate", 0)
             speed = str(data.get("speed", ""))
             gps = data.get("longitude", 0)
-            print("-------------------------------" + str(gps))
             if gps < 10 and gps > 5:
                 gpsmsg = "ok"
             else:
@@ -69,7 +68,6 @@ if __name__ == "__main__":
                     try:
                         msg = bus.recv(timeout=0.05)
                         if msg is None:
-                            print("Keine Nachricht empfangen")
                             continue
                         if msg.arbitration_id == reg_req:
                             if msg.data[0] == reg_fieldname:
