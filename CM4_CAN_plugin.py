@@ -50,8 +50,11 @@ if __name__ == "__main__":
             with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
                 try:
                     bus.send(can.Message(arbitration_id=reg_heart, data=[heartbeat % 256, (heartbeat // 256) % 256], is_extended_id=False))
+                    print("Heartbeat gesendet:", heartbeat)
                     bus.send(can.Message(arbitration_id=reg_geo_l, data=[geo_l % 256, (geo_l // 256) % 256], is_extended_id=False))
+                    print("Linke Geometrie gesendet:", geo_l)
                     bus.send(can.Message(arbitration_id=reg_geo_r, data=[geo_r % 256, (geo_r // 256) % 256], is_extended_id=False))
+                    print("Rechte Geometrie gesendet:", geo_r)
                 except Exception as e:
                     print("Fehler beim Schreiben der Geometriedaten:", e)
                 try:
