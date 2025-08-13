@@ -10,7 +10,9 @@ def read_can_str(reg_addr, req_addr):
                     for part in msg.data:
                         data.append(part)
                     return str(data)
-            return ""
+                if msg.timeout:
+                    print("Timeout beim Lesen")
+                    return ""
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
