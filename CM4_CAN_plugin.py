@@ -6,12 +6,14 @@ import time
 start_time = time.time()
 loop_duration = 0.05
 
+heartbeat = 1000
 geo_l = 0
 geo_r = 0
 fieldname = "Testfeld"
 speed = "Testgeschwindigkeit"
 gps = "TestGPS"
 
+reg_heart = 0x01
 reg_geo_l = 0x13
 reg_geo_r = 0x23
 reg_fieldname = 0x60
@@ -41,6 +43,7 @@ if __name__ == "__main__":
             # Send CAN messages
             with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
                 try:
+                    bus.send(can.Message(arbitration_id=reg_heart, data=[heartbeat % 256, (heartbeat // 256) % 256], is_extended_id=False))
                     bus.send(can.Message(arbitration_id=reg_geo_l, data=[geo_l % 256, (geo_l // 256) % 256], is_extended_id=False))
                     bus.send(can.Message(arbitration_id=reg_geo_r, data=[geo_r % 256, (geo_r // 256) % 256], is_extended_id=False))
                 except Exception as e:
