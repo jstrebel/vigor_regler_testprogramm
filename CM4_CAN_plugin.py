@@ -9,12 +9,16 @@ loop_duration = 0.05
 heartbeat = 1000
 geo_l = 0
 geo_r = 0
+pos_l = 0
+pos_r = 0
 fieldname = "Testfeld"
 speed = "Testgeschwindigkeit"
 gps = "TestGPS"
 
 reg_heart = 0x01
+reg_pos_l = 0x11
 reg_geo_l = 0x13
+reg_pos_r = 0x21
 reg_geo_r = 0x23
 reg_fieldname = 0x60
 reg_speed = 0x61
@@ -56,3 +60,9 @@ if __name__ == "__main__":
                             bus.send(can.Message(arbitration_id=reg_speed, data=speed.encode(), is_extended_id=False))
                         elif msg.data[0] == reg_gps:
                             bus.send(can.Message(arbitration_id=reg_gps, data=gps.encode(), is_extended_id=False))
+                    elif msg.arbitration_id == reg_pos_l:
+                        pos_l = msg.data[0] + (msg.data[1] << 8)
+                    elif msg.arbitration_id == reg_pos_r:
+                        pos_r = msg.data[0] + (msg.data[1] << 8)
+                    r.set("client_position", json.dumps({"left_position": pos_l, "right_position": pos_r}))
+
