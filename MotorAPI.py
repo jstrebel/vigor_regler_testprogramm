@@ -17,8 +17,23 @@ reg_mem_off = 0x81
 reg_cmd = 0x90
 reg_req_nano = 0x99
 
+status = 0
+pos_l = 0
+pos_r = 0
+mem_cnt = 0
+mem_off = 0
+vend_l = 0
+vend_r = 0
+geo_l = 0
+geo_r = 0
+
+
 def get_status():
-    return CAN_Wrapper.read_can_2byte(reg_status, reg_req_nano)
+    global status
+    msg = CAN_Wrapper.read_can_2byte(reg_status, reg_req_nano)
+    if msg is not None:
+        status = msg
+    return status
 
 def get_state(numbers=False, status=None):
     if status is None:
@@ -63,13 +78,23 @@ def get_inversion(status=None):
     return inversion
 
 def get_pos():
-    pos_l = CAN_Wrapper.read_can_2byte(reg_pos_l, reg_req_nano)
-    pos_r = CAN_Wrapper.read_can_2byte(reg_pos_r, reg_req_nano)
+    global pos_l, pos_r
+    msg = CAN_Wrapper.read_can_2byte(reg_pos_l, reg_req_nano)
+    if msg is not None:
+        pos_l = msg
+    msg = CAN_Wrapper.read_can_2byte(reg_pos_r, reg_req_nano)
+    if msg is not None:
+        pos_r = msg
     return [pos_l, pos_r]
 
 def get_eeprom_state():
-    mem_cnt = CAN_Wrapper.read_can_2byte(reg_mem_cnt, reg_req_nano)
-    mem_off = CAN_Wrapper.read_can_2byte(reg_mem_off, reg_req_nano)
+    global mem_cnt, mem_off
+    msg = CAN_Wrapper.read_can_2byte(reg_mem_cnt, reg_req_nano)
+    if msg is not None:
+        mem_cnt = msg
+    msg = CAN_Wrapper.read_can_2byte(reg_mem_off, reg_req_nano)
+    if msg is not None:
+        mem_off = msg
     return [mem_cnt, mem_off]
 
 def set_vend(vend_l, vend_r):
@@ -79,13 +104,23 @@ def set_vend(vend_l, vend_r):
     return
 
 def get_vend():
-    vend_l = CAN_Wrapper.read_can_2byte(reg_vend_l, reg_req_nano)
-    vend_r = CAN_Wrapper.read_can_2byte(reg_vend_r, reg_req_nano)
+    global vend_l, vend_r
+    msg = CAN_Wrapper.read_can_2byte(reg_vend_l, reg_req_nano)
+    if msg is not None:
+        vend_l = msg
+    msg = CAN_Wrapper.read_can_2byte(reg_vend_r, reg_req_nano)
+    if msg is not None:
+        vend_r = msg
     return [vend_l, vend_r]
 
 def get_geo():
-    geo_l = CAN_Wrapper.read_can_2byte(reg_geo_l, reg_req_nano)
-    geo_r = CAN_Wrapper.read_can_2byte(reg_geo_r, reg_req_nano)
+    global geo_l, geo_r
+    msg = CAN_Wrapper.read_can_2byte(reg_geo_l, reg_req_nano)
+    if msg is not None:
+        geo_l = msg
+    msg = CAN_Wrapper.read_can_2byte(reg_geo_r, reg_req_nano)
+    if msg is not None:
+        geo_r = msg
     return [geo_l, geo_r]
 
 def set_ref(ref_l, ref_r):
