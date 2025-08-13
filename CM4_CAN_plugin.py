@@ -7,6 +7,7 @@ start_time = time.time()
 loop_duration = 0.05
 
 heartbeat = 1000
+motor_status = 0
 geo_l = 0
 geo_r = 0
 pos_l = 0
@@ -16,6 +17,7 @@ speed = "Testgeschwindigkeit"
 gps = "TestGPS"
 
 reg_heart = 0x01
+reg_motor_status = 0x05
 reg_pos_l = 0x11
 reg_geo_l = 0x13
 reg_pos_r = 0x21
@@ -64,5 +66,6 @@ if __name__ == "__main__":
                         pos_l = msg.data[0] + (msg.data[1] << 8)
                     elif msg.arbitration_id == reg_pos_r:
                         pos_r = msg.data[0] + (msg.data[1] << 8)
-                    r.set("client_position", json.dumps({"left_position": pos_l, "right_position": pos_r}))
-
+                    elif msg.arbitration_id == reg_motor_status:
+                        motor_status = msg.data[0] + (msg.data[1] << 8)
+                    r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
