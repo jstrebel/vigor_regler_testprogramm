@@ -5,14 +5,27 @@ reg_speed = 0x61
 reg_gps = 0x62
 reg_req_cm4 = 0x98
 
+fieldname = "asdf"
+speed = "0 km/h"
+gps = "GPS not ok"
+
 def get_fieldname():
-    fieldname = CAN_Wrapper.read_can_str(reg_fieldname, reg_req_cm4)
+    global fieldname
+    msg = CAN_Wrapper.read_can_str(reg_fieldname, reg_req_cm4)
+    if msg is not None:
+        fieldname = msg
     return fieldname
 
 def get_speed():
-    speed = CAN_Wrapper.read_can_str(reg_speed, reg_req_cm4)
+    global speed
+    msg = CAN_Wrapper.read_can_str(reg_speed, reg_req_cm4)
+    if msg is not None:
+        speed = msg
     return speed + " km/h"
 
 def get_gps():
-    gps = CAN_Wrapper.read_can_str(reg_gps, reg_req_cm4)
+    global gps
+    msg = CAN_Wrapper.read_can_str(reg_gps, reg_req_cm4)
+    if msg is not None:
+        gps = msg
     return gps

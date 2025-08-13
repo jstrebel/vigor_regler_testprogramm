@@ -42,7 +42,11 @@ if __name__ == "__main__":
             geo_l = data.get("left_rate", 0)
             geo_r = data.get("right_rate", 0)
             speed = str(data.get("speed", ""))
-            gps = str(data.get("longitude", "GPS not ok"))
+            gps = data.get("longitude", 0)
+            if gps < 10 and gps > 5:
+                gps = "GPS not ok"
+            else:
+                gps = "GPS ok"
 
             fieldname = r.get("project_file")
 
