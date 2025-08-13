@@ -164,7 +164,7 @@ class SliderApp(QMainWindow):
             RedisAPI.set_value("hmi_soll_r", self.get_str(Statemachine.get_geo()[1]) + "%")
             RedisAPI.set_value("hmi_gps", CM4API.get_gps())
             RedisAPI.set_value("hmi_speed", CM4API.get_speed())
-            RedisAPI.set_value("hmi_feldname", CM4API.get_feldname())
+            RedisAPI.set_value("hmi_feldname", CM4API.get_fieldname())
         if statemachine_state == "ERROR" and state != "Fehler":
             Statemachine.set_state("INIT")
 
