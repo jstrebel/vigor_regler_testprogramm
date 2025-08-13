@@ -32,7 +32,6 @@ if __name__ == "__main__":
     r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
     while True:
-        try:
         # Check if loop duration has passed
         if time.time() - start_time > loop_duration:
             start_time = time.time()
