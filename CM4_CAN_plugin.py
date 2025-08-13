@@ -14,7 +14,8 @@ pos_l = 123
 pos_r = 123
 fieldname = "Testfeld"
 speed = "Testgeschwindigkeit"
-gps = "TestGPS"
+gpsmsg = "TestGPS"
+gps = 0
 
 reg_heart = 0x01
 reg_motor_status = 0x05
@@ -45,9 +46,9 @@ if __name__ == "__main__":
             gps = data.get("longitude", 0)
             print("-------------------------------" + str(gps))
             if gps < 10 and gps > 5:
-                gps = "ok"
+                gpsmsg = "ok"
             else:
-                gps = "fault"
+                gpsmsg = "fault"
 
             fieldname = r.get("project_file")
 
@@ -76,8 +77,8 @@ if __name__ == "__main__":
                                 bus.send(can.Message(arbitration_id=reg_speed, data=list(speed.encode('utf-8')), is_extended_id=False))
                                 print("Gesendet:", speed)
                             elif msg.data[0] == reg_gps:
-                                bus.send(can.Message(arbitration_id=reg_gps, data=list(gps.encode('utf-8')), is_extended_id=False))
-                                print("Gesendet:", gps)
+                                bus.send(can.Message(arbitration_id=reg_gps, data=list(gpsmsg.encode('utf-8')), is_extended_id=False))
+                                print("Gesendet:", gpsmsg)
                         elif msg.arbitration_id == reg_pos_l:
                             pos_l = msg.data[0] + (msg.data[1] << 8)
                             print("Linke Position:", pos_l)
