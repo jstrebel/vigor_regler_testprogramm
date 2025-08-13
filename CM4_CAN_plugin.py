@@ -58,11 +58,11 @@ if __name__ == "__main__":
                     for msg in bus:
                         if msg.arbitration_id == reg_req:
                             if msg.data[0] == reg_fieldname:
-                                bus.send(can.Message(arbitration_id=reg_fieldname, data=list(fieldname.encode()), is_extended_id=False))
+                                bus.send(can.Message(arbitration_id=reg_fieldname, data=list(fieldname.encode('utf-8')), is_extended_id=False))
                             elif msg.data[0] == reg_speed:
-                                bus.send(can.Message(arbitration_id=reg_speed, data=list(speed.encode()), is_extended_id=False))
+                                bus.send(can.Message(arbitration_id=reg_speed, data=list(speed.encode('utf-8')), is_extended_id=False))
                             elif msg.data[0] == reg_gps:
-                                bus.send(can.Message(arbitration_id=reg_gps, data=list(gps.encode()), is_extended_id=False))
+                                bus.send(can.Message(arbitration_id=reg_gps, data=list(gps.encode('utf-8')), is_extended_id=False))
                         elif msg.arbitration_id == reg_pos_l:
                             pos_l = msg.data[0] + (msg.data[1] << 8)
                         elif msg.arbitration_id == reg_pos_r:
