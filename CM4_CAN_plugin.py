@@ -68,10 +68,13 @@ if __name__ == "__main__":
                                 print("Gesendet:", gps)
                         elif msg.arbitration_id == reg_pos_l:
                             pos_l = msg.data[0] + (msg.data[1] << 8)
+                            print("Linke Position:", pos_l)
                         elif msg.arbitration_id == reg_pos_r:
                             pos_r = msg.data[0] + (msg.data[1] << 8)
+                            print("Rechte Position:", pos_r)
                         elif msg.arbitration_id == reg_motor_status:
                             motor_status = msg.data[0] + (msg.data[1] << 8)
+                            print("Motorstatus:", motor_status)
                         r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
                 except Exception as e:
                     print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
