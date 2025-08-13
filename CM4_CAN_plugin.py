@@ -92,3 +92,5 @@ if __name__ == "__main__":
                         r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
                     except Exception as e:
                         print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
+        else:
+            pass
