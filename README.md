@@ -47,6 +47,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Redis
+```
+sudo apt install redis-server
+```
+UND IN REQUIREMENTS.TXT FEHLT ES AUCH NOCH
+
 ## Kommunikation
 Die Kommunikation auf dem CAN Bus erfolgt in 5 verschiedenen Use-Cases.
 
