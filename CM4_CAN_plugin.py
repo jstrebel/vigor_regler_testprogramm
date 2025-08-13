@@ -43,6 +43,7 @@ if __name__ == "__main__":
             geo_r = data.get("right_rate", 0)
             speed = str(data.get("speed", ""))
             gps = data.get("longitude", 0)
+            print("-------------------------------" + str(gps))
             if gps < 10 and gps > 5:
                 gps = "GPS not ok"
             else:
