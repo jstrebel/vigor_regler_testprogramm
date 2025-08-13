@@ -63,8 +63,9 @@ if __name__ == "__main__":
                     print("Rechte Geometrie gesendet:", geo_r)
                 except Exception as e:
                     print("Fehler beim Schreiben der Geometriedaten:", e)
-                try:
-                    for _ in range(5):  # Versuche 5 Mal, eine Nachricht zu empfangen
+                
+                for _ in range(5):  # Versuche 5 Mal, eine Nachricht zu empfangen
+                    try:
                         msg = bus.recv(timeout=0.05)
                         if msg is None:
                             print("Keine Nachricht empfangen")
@@ -89,5 +90,5 @@ if __name__ == "__main__":
                             motor_status = msg.data[0] + (msg.data[1] << 8)
                             print("Motorstatus:", motor_status)
                     r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
-                except Exception as e:
-                    print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
+                    except Exception as e:
+                        print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
