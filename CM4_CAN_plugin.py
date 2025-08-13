@@ -45,9 +45,9 @@ if __name__ == "__main__":
             gps = data.get("longitude", 0)
             print("-------------------------------" + str(gps))
             if gps < 10 and gps > 5:
-                gps = "GPS ok"
+                gps = "ok"
             else:
-                gps = "GPS not ok"
+                gps = "fault"
 
             fieldname = r.get("project_file")
 

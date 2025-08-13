@@ -7,7 +7,7 @@ reg_req_cm4 = 0x98
 
 fieldname = "asdf"
 speed = "0 km/h"
-gps = "GPS not ok"
+gps = "GPS: fault"
 
 def get_fieldname():
     global fieldname
@@ -28,4 +28,4 @@ def get_gps():
     msg = CAN_Wrapper.read_can_str(reg_gps, reg_req_cm4)
     if msg is not None:
         gps = msg
-    return gps
+    return "GPS: " + gps
