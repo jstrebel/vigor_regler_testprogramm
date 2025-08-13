@@ -1,6 +1,6 @@
 import can 
 
-def read_can_str(reg_addr, req_addr, timeout=0.01):
+def read_can_str(reg_addr, req_addr, timeout=0.03):
     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
         try:
             bus.send(can.Message(arbitration_id=req_addr, data=[reg_addr, 0], is_extended_id=False))
@@ -16,7 +16,7 @@ def read_can_str(reg_addr, req_addr, timeout=0.01):
             print(e)
             return ""
 
-def read_can_2byte(reg_addr, req_addr, timeout=0.01):
+def read_can_2byte(reg_addr, req_addr, timeout=0.03):
     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
         try:
             bus.send(can.Message(arbitration_id=req_addr, data=[reg_addr, 0], is_extended_id=False))
