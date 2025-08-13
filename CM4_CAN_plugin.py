@@ -49,7 +49,7 @@ if __name__ == "__main__":
             speed = str(data.get("speed", ""))
             gps = data.get("longitude", 0)
             if gps < 10 and gps > 5:
-                gpsmsg = "ok"
+                gpsmsg = "ok   "
             else:
                 gpsmsg = "fault"
 
