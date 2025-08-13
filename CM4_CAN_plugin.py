@@ -59,6 +59,9 @@ if __name__ == "__main__":
                     print("Fehler beim Schreiben der Geometriedaten:", e)
                 try:
                     msg = bus.recv(timeout=0.05)
+                    if msg is None:
+                        print("Keine Nachricht empfangen")
+                        continue
                     if msg.arbitration_id == reg_req:
                         if msg.data[0] == reg_fieldname:
                             bus.send(can.Message(arbitration_id=reg_fieldname, data=list(fieldname.encode('utf-8')), is_extended_id=False))
