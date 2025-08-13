@@ -1,18 +1,16 @@
 import can 
 
-def read_can_str(reg_addr, req_addr):
+def read_can_str(reg_addr, req_addr, timeout=0.01):
     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
         try:
             bus.send(can.Message(arbitration_id=req_addr, data=[reg_addr, 0], is_extended_id=False))
-            for msg in bus:
-                if msg.arbitration_id == reg_addr:
-                    data = []
-                    for part in msg.data:
-                        data.append(part)
-                    return str(data)
-                if msg.timeout:
-                    print("Timeout beim Lesen")
-                    return ""
+            msg = bus.recv(timeout)
+            if msg and msg.arbitration_id == reg_addr:
+                data = []
+                for part in msg.data:
+                    data.append(part)
+                return str(data)
+            return ""
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
