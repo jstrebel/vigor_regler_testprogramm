@@ -4,7 +4,7 @@ import json
 import time
 
 start_time = time.time()
-loop_duration = 0.2
+loop_duration = 0.5
 
 heartbeat = 1000
 motor_status = 0
