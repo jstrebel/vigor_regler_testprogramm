@@ -63,8 +63,8 @@ if __name__ == "__main__":
                     print("Rechte Geometrie gesendet:", geo_r)
                 except Exception as e:
                     print("Fehler beim Schreiben der Geometriedaten:", e)
-                
-                for _ in range(5):  # Versuche 5 Mal, eine Nachricht zu empfangen
+
+                for _ in range(10):  # Versuche 10 Mal, eine Nachricht zu empfangen
                     try:
                         msg = bus.recv(timeout=0.05)
                         if msg is None:
