@@ -178,10 +178,10 @@ class SliderApp(QMainWindow):
             return str(num)
 
     def get_pos_prozent(self, pos, vend, inversion):
-        if vend < 100:
-            vend = 100
-        if vend > 910:
-            vend = 910
+        if vend <= 100:
+            vend = 101
+        if vend >= 910:
+            vend = 909
         if inversion:
             pos_prozent = (910 - pos) / (910 - vend) * 100
         else: 
