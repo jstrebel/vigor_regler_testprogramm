@@ -11,7 +11,6 @@ def read_can_str(reg_addr, req_addr, timeout=0.05):
                     data += chr(part)
                 return data
             print("Timeout beim Lesen")
-            return " "
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
