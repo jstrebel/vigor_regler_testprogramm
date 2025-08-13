@@ -26,7 +26,6 @@ def read_can_2byte(reg_addr, req_addr, timeout=0.05):
                 if len(msg.data) == 2:
                     return msg.data[0] + msg.data[1]*256
             print("Timeout beim Lesen")
-            return 0
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
