@@ -44,7 +44,7 @@ if __name__ == "__main__":
             speed = data.get("speed", "")
             gps = data.get("longitude", "GPS not ok")
 
-            fieldname = r.get("project_file", "")
+            fieldname = r.get("project_file")
 
             # Send CAN messages
             with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
