@@ -3,9 +3,6 @@ import redis
 import json
 import time
 
-start_time = time.time()
-loop_duration = 5
-
 heartbeat = 1000
 motor_status = 0
 geo_l = 0
@@ -33,65 +30,59 @@ if __name__ == "__main__":
     r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
     while True:
-        # Check if loop duration has passed
-        if time.time() - start_time > loop_duration:
-            start_time = time.time()
-
-            # Read values from Redis
-            redismsg = r.get("client_feedback")
-            data = json.loads(redismsg) if redismsg else {}
-            geo_l = data.get("left_rate", 0)
-            geo_r = data.get("right_rate", 0)
-            speed = str(data.get("speed", ""))
-            gps = data.get("longitude", 0)
-            print("-------------------------------" + str(gps))
-            if gps < 10 and gps > 5:
-                gpsmsg = "ok"
-            else:
-                gpsmsg = "fault"
-
-            fieldname = str(r.get("project_file"))
-
-            # Send CAN messages
-            with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
-                try:
-                    bus.send(can.Message(arbitration_id=reg_heart, data=[heartbeat % 256, (heartbeat // 256) % 256], is_extended_id=False))
-                    print("Heartbeat gesendet:", heartbeat)
-                    bus.send(can.Message(arbitration_id=reg_geo_l, data=[geo_l % 256, (geo_l // 256) % 256], is_extended_id=False))
-                    print("Linke Geometrie gesendet:", geo_l)
-                    bus.send(can.Message(arbitration_id=reg_geo_r, data=[geo_r % 256, (geo_r // 256) % 256], is_extended_id=False))
-                    print("Rechte Geometrie gesendet:", geo_r)
-                except Exception as e:
-                    print("Fehler beim Schreiben der Geometriedaten:", e)
-
-                for i in range(100):  # Versuche 10 Mal, eine Nachricht zu empfangen
-                    print(i)
-                    try:
-                        msg = bus.recv(timeout=0.05)
-                        if msg is None:
-                            print("Keine Nachricht empfangen")
-                            continue
-                        if msg.arbitration_id == reg_req:
-                            if msg.data[0] == reg_fieldname:
-                                bus.send(can.Message(arbitration_id=reg_fieldname, data=list(fieldname.encode('utf-8')), is_extended_id=False))
-                                print("Gesendet:", fieldname)
-                            elif msg.data[0] == reg_speed:
-                                bus.send(can.Message(arbitration_id=reg_speed, data=list(speed.encode('utf-8')), is_extended_id=False))
-                                print("Gesendet:", speed)
-                            elif msg.data[0] == reg_gps:
-                                bus.send(can.Message(arbitration_id=reg_gps, data=list(gpsmsg.encode('utf-8')), is_extended_id=False))
-                                print("Gesendet:", gpsmsg)
-                        elif msg.arbitration_id == reg_pos_l:
-                            pos_l = msg.data[0] + (msg.data[1] << 8)
-                            print("Linke Position:", pos_l)
-                        elif msg.arbitration_id == reg_pos_r:
-                            pos_r = msg.data[0] + (msg.data[1] << 8)
-                            print("Rechte Position:", pos_r)
-                        elif msg.arbitration_id == reg_motor_status:
-                            motor_status = msg.data[0] + (msg.data[1] << 8)
-                            print("Motorstatus:", motor_status)
-                        r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
-                    except Exception as e:
-                        print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
+        # Read values from Redis
+        redismsg = r.get("client_feedback")
+        data = json.loads(redismsg) if redismsg else {}
+        geo_l = data.get("left_rate", 0)
+        geo_r = data.get("right_rate", 0)
+        speed = str(data.get("speed", ""))
+        gps = data.get("longitude", 0)
+        print("-------------------------------" + str(gps))
+        if gps < 10 and gps > 5:
+            gpsmsg = "ok"
         else:
-            pass
+            gpsmsg = "fault"
+
+        fieldname = str(r.get("project_file"))
+
+        # Send CAN messages
+        with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+            try:
+                bus.send(can.Message(arbitration_id=reg_heart, data=[heartbeat % 256, (heartbeat // 256) % 256], is_extended_id=False))
+                print("Heartbeat gesendet:", heartbeat)
+                bus.send(can.Message(arbitration_id=reg_geo_l, data=[geo_l % 256, (geo_l // 256) % 256], is_extended_id=False))
+                print("Linke Geometrie gesendet:", geo_l)
+                bus.send(can.Message(arbitration_id=reg_geo_r, data=[geo_r % 256, (geo_r // 256) % 256], is_extended_id=False))
+                print("Rechte Geometrie gesendet:", geo_r)
+            except Exception as e:
+                print("Fehler beim Schreiben der Geometriedaten:", e)
+
+            for i in range(50):  # dann sind sicher alle 3 anfragen gekommen
+                print(i)
+                try:
+                    msg = bus.recv(timeout=0.05)
+                    if msg is None:
+                        print("Keine Nachricht empfangen")
+                        continue
+                    if msg.arbitration_id == reg_req:
+                        if msg.data[0] == reg_fieldname:
+                            bus.send(can.Message(arbitration_id=reg_fieldname, data=list(fieldname.encode('utf-8')), is_extended_id=False))
+                            print("Gesendet:", fieldname)
+                        elif msg.data[0] == reg_speed:
+                            bus.send(can.Message(arbitration_id=reg_speed, data=list(speed.encode('utf-8')), is_extended_id=False))
+                            print("Gesendet:", speed)
+                        elif msg.data[0] == reg_gps:
+                            bus.send(can.Message(arbitration_id=reg_gps, data=list(gpsmsg.encode('utf-8')), is_extended_id=False))
+                            print("Gesendet:", gpsmsg)
+                    elif msg.arbitration_id == reg_pos_l:
+                        pos_l = msg.data[0] + (msg.data[1] << 8)
+                        print("Linke Position:", pos_l)
+                    elif msg.arbitration_id == reg_pos_r:
+                        pos_r = msg.data[0] + (msg.data[1] << 8)
+                        print("Rechte Position:", pos_r)
+                    elif msg.arbitration_id == reg_motor_status:
+                        motor_status = msg.data[0] + (msg.data[1] << 8)
+                        print("Motorstatus:", motor_status)
+                    r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
+                except Exception as e:
+                    print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
