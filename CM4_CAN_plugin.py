@@ -42,8 +42,8 @@ if __name__ == "__main__":
                 data = json.loads(redismsg) if redismsg else {}
                 geo_l = data.get("left_rate", 0)
                 geo_r = data.get("right_rate", 0)
-                speed = data.get("speed", "")
-                gps = data.get("longitude", "GPS not ok")
+                speed = str(data.get("speed", ""))
+                gps = str(data.get("longitude", "GPS not ok"))
 
                 fieldname = r.get("project_file")
 
