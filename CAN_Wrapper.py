@@ -10,10 +10,11 @@ def read_can_str(reg_addr, req_addr):
                     for part in msg.data:
                         data.append(part)
                     return str(data)
+            return ""
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
-            return 0
+            return ""
         
 def read_can_2byte(reg_addr, req_addr):
     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
@@ -23,6 +24,7 @@ def read_can_2byte(reg_addr, req_addr):
                 if msg.arbitration_id == reg_addr:
                     if len(msg.data) == 2:
                         return msg.data[0] + msg.data[1]*256
+            return 0
         except Exception as e:
             print("Fehler beim Lesen")
             print(e)
