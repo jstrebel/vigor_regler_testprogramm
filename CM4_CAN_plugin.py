@@ -8,6 +8,7 @@ loop_duration = 0.2
 
 heartbeat = 1000
 motor_status = 0
+hb_state = "INIT"
 geo_l = 0
 geo_r = 0
 pos_l = 123
@@ -19,6 +20,7 @@ gps = 0
 
 reg_heart = 0x01
 reg_motor_status = 0x05
+reg_hb_status = 0x06
 reg_pos_l = 0x11
 reg_geo_l = 0x13
 reg_pos_r = 0x21
@@ -82,7 +84,12 @@ if __name__ == "__main__":
                             pos_r = msg.data[0] + (msg.data[1] << 8)
                         elif msg.arbitration_id == reg_motor_status:
                             motor_status = msg.data[0] + (msg.data[1] << 8)
-                        r.set("motor_feedback", json.dumps({"motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
+                        elif msg.arbitration_id == reg_hb_status:
+                            hb_state = ""
+                            for part in msg.data:
+                                hb_state += chr(part)
+
+                        r.set("motor_feedback", json.dumps({"hb_state": hb_state, "motor_status": motor_status, "left_position": pos_l, "right_position": pos_r}))
                     except Exception as e:
                         print("Fehler beim Verarbeiten der CAN-Nachricht:", e)
         else:

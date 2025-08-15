@@ -1,5 +1,6 @@
 import CAN_Wrapper
 
+reg_hb_status = 0x06
 reg_fieldname = 0x60
 reg_speed = 0x61
 reg_gps = 0x62
@@ -29,3 +30,6 @@ def get_gps():
     if msg is not None:
         gps = msg
     return "GPS: " + gps
+
+def send_hb_state(hb_state):
+    CAN_Wrapper.write_can_str(reg_hb_status, hb_state)

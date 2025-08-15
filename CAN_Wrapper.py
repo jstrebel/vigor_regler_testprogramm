@@ -38,3 +38,13 @@ def write_can(reg_addr, val):
         except:
             print("Fehler beim Schreiben")
             return 0
+        
+def write_can_str(reg_addr, val):
+    with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+        data = list(val.encode('utf-8'))
+        msg = can.Message(arbitration_id=reg_addr, data=data, is_extended_id=False)
+        try:
+            bus.send(msg)
+        except:
+            print("Fehler beim Schreiben")
+            return 0
