@@ -131,8 +131,20 @@ class SliderApp(QMainWindow):
         e = MotorAPI.get_eeprom_state()
         if state == "Fehler":
             Statemachine.set_error()
-            # TODO set Redis error text
-            RedisAPI.set_value("hmi_fehler", str(status))
+            fehler_text = "Allgemeiner Fehler"
+            if watchdogs[0]:
+                fehler_text = "Fehler Motor links einfahren"
+            elif watchdogs[1]:
+                fehler_text = "Fehler Motor links ausfahren"
+            elif watchdogs[2]:
+                fehler_text = "Fehler Motor rechts einfahren"
+            elif watchdogs[3]:
+                fehler_text = "Fehler Motor rechts ausfahren"
+            if status & 0b100000000000000:
+                fehler_text = "Timeout CM4"
+            elif status & 0b1000000000000000:
+                fehler_text = "Timeout Motor"
+            RedisAPI.set_value("hmi_fehler", fehler_text)
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
