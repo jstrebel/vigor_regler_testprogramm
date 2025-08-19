@@ -1,3 +1,5 @@
+# Version passend zu Vigor 5.0 (19.08.2025)
+
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
