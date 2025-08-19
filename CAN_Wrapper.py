@@ -1,0 +1,50 @@
+import can 
+
+def read_can_str(reg_addr, req_addr, timeout=0.05):
+    with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+        try:
+            bus.send(can.Message(arbitration_id=req_addr, data=[reg_addr, 0], is_extended_id=False))
+            msg = bus.recv(timeout)
+            if msg and msg.arbitration_id == reg_addr:
+                data = ""
+                for part in msg.data:
+                    data += chr(part)
+                return data
+            print("Timeout beim Lesen")
+        except Exception as e:
+            print("Fehler beim Lesen")
+            print(e)
+            return ""
+
+def read_can_2byte(reg_addr, req_addr, timeout=0.05):
+    with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+        try:
+            bus.send(can.Message(arbitration_id=req_addr, data=[reg_addr, 0], is_extended_id=False))
+            msg = bus.recv(timeout)
+            if msg and msg.arbitration_id == reg_addr:
+                if len(msg.data) == 2:
+                    return msg.data[0] + msg.data[1]*256
+            print("Timeout beim Lesen")
+        except Exception as e:
+            print("Fehler beim Lesen")
+            print(e)
+            return 0
+        
+def write_can(reg_addr, val):
+     with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+        msg = can.Message(arbitration_id=reg_addr, data=[val%256, (val//256)%256], is_extended_id=False)
+        try:
+            bus.send(msg)
+        except:
+            print("Fehler beim Schreiben")
+            return 0
+        
+def write_can_str(reg_addr, val):
+    with can.Bus(interface='socketcan', channel='can0', bitrate=125000) as bus:
+        data = list(val.encode('utf-8'))
+        msg = can.Message(arbitration_id=reg_addr, data=data, is_extended_id=False)
+        try:
+            bus.send(msg)
+        except:
+            print("Fehler beim Schreiben")
+            return 0
