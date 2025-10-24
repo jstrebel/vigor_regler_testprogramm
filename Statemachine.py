@@ -58,14 +58,14 @@ def set_vend_curr(vend):
     if 100 <= vend <= 910:
         vend_curr = vend
     else:
-        raise ValueError("Vend must be between 100 and 910")
+        vend_curr = 910  # Default to max if out of range
     
 def set_inverted(invert):
     global inverted
     if isinstance(invert, bool):
         inverted = invert
     else:
-        raise ValueError("Inversion must be a boolean value")
+        inverted = False  # Default to False if not a boolean
 
 def get_state():
     global state
