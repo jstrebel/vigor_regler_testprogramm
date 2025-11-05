@@ -124,7 +124,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/ip link set can0 up type can bitrate 125000
+ExecStart=/sbin/ip link set can0 up type can bitrate 125000 restart-ms 100
 RemainAfterExit=yes
 
 [Install]
