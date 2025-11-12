@@ -1,10 +1,17 @@
+# Version passend zu Vigor 5.0 (19.08.2025)
+
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QPushButton, QSpinBox
 from PyQt5.QtCore import QTimer
+from time import sleep
 import MotorAPI
+import RedisAPI
+import CM4API
+import Statemachine
 
 class SliderApp(QMainWindow):
     def __init__(self):
+        global ui_control
         super().__init__()
 
         self.setWindowTitle("TestGUI_Raspi")
@@ -42,13 +49,18 @@ class SliderApp(QMainWindow):
         self.reset_s = QPushButton("Controllerstate zurücksetzen")
         self.reset_s.pressed.connect(self.reset_state)
 
+        self.btn_ui_control = QPushButton("UI Control OFF")
+        self.btn_ui_control.pressed.connect(self.ui_control)
+
         self.slider_left = QSlider()
-        self.slider_left.setRange(0, 100)
+        self.slider_left.setRange(0, 1000)
         self.slider_left.valueChanged.connect(self.update_reference)
+        self.slider_left.setEnabled(ui_control)
 
         self.slider_right = QSlider()
-        self.slider_right.setRange(0, 100)
+        self.slider_right.setRange(0, 1000)
         self.slider_right.valueChanged.connect(self.update_reference)
+        self.slider_right.setEnabled(ui_control)
 
         self.text_left = QLabel("Motor links:\n" + \
                                 "Inverted:\t\tFalse\n" + \
@@ -74,6 +86,7 @@ class SliderApp(QMainWindow):
         stackm1.addWidget(self.text_left)
         stackm1.addWidget(self.spin_vend_left)
 
+        stackm2.addWidget(self.btn_ui_control)
         stackm2.addWidget(self.text_right)
         stackm2.addWidget(self.spin_vend_right)
 
@@ -85,10 +98,15 @@ class SliderApp(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
-        self.timer.start(500)  # Alle 100 Millisekunden
+        self.timer.start(100)  # Alle 100 Millisekunden
+        RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
+        Statemachine.soll_vend = MotorAPI.get_vend()[0]
+        RedisAPI.set_value("hmi_state", "INIT")
 
     def update_reference(self):
         MotorAPI.set_ref(self.slider_left.value(), self.slider_right.value())
+        RedisAPI.set_value("hmi_soll_l", self.get_str(self.slider_left.value()) + "%")
+        RedisAPI.set_value("hmi_soll_r", self.get_str(self.slider_right.value()) + "%")
 
     def update(self):
         MotorAPI.send_heartbeat()
@@ -113,6 +131,22 @@ class SliderApp(QMainWindow):
         watchdogs = MotorAPI.get_watchdogs(status=status)
         inversion = MotorAPI.get_inversion(status=status)
         e = MotorAPI.get_eeprom_state()
+        if state == "Fehler":
+            Statemachine.set_error()
+            fehler_text = "Allgemeiner Fehler"
+            if watchdogs[0]:
+                fehler_text = "Fehler Motor links einfahren"
+            elif watchdogs[1]:
+                fehler_text = "Fehler Motor links ausfahren"
+            elif watchdogs[2]:
+                fehler_text = "Fehler Motor rechts einfahren"
+            elif watchdogs[3]:
+                fehler_text = "Fehler Motor rechts ausfahren"
+            if status & 0b100000000000000:
+                fehler_text = "Timeout CM4"
+            elif status & 0b1000000000000000:
+                fehler_text = "Timeout Motor"
+            RedisAPI.set_value("hmi_fehler", fehler_text)
         self.text_overall.setText(f"Gesamtübersicht:\n" + \
                                   f"Status:\t{format(status, '#018b')}\n" + \
                                   f"Controllerstate:\t{state}\n" + \
@@ -129,9 +163,51 @@ class SliderApp(QMainWindow):
                                   f"EEPROM Offset:\t\t{e[1]}\n" + \
                                   f"Inversion left:\t{inversion[0]}\n" + \
                                   f"Inversion right:\t{inversion[1]}\n")
+        Statemachine.set_inverted(inversion[0])
+        RedisAPI.set_value("hmi_pos_l", self.get_str(self.get_pos_prozent(p[0], a[0], inversion[0])) + "%")
+        RedisAPI.set_value("hmi_pos_r", self.get_str(self.get_pos_prozent(p[1], a[1], inversion[1])) + "%")
+        Statemachine.set_vend_curr(a[0])
+        statemachine_state = Statemachine.get_state()
+        CM4API.send_hb_state(statemachine_state)
+        RedisAPI.set_value("hmi_state", statemachine_state)
+        RedisAPI.set_value("hmi_vend_soll", Statemachine.get_vend_soll())
+        if not ui_control:
+            self.slider_left.setValue(Statemachine.get_soll()[0])
+            self.slider_right.setValue(Statemachine.get_soll()[1])
+        if statemachine_state == "EDGE_L" or statemachine_state == "EDGE_R" or statemachine_state == "AUTO":
+            RedisAPI.set_value("hmi_soll_l", self.get_str(Statemachine.get_geo()[0]) + "%")
+            RedisAPI.set_value("hmi_soll_r", self.get_str(Statemachine.get_geo()[1]) + "%")
+            RedisAPI.set_value("hmi_gps", CM4API.get_gps())
+            RedisAPI.set_value("hmi_speed", CM4API.get_speed())
+            RedisAPI.set_value("hmi_feldname", CM4API.get_fieldname())
+
+
+    def get_str(self, num):
+        if num < 10:
+            return "  " + str(num)
+        elif num < 100:
+            return " " + str(num)
+        else:
+            return str(num)
+
+    def get_pos_prozent(self, pos, vend, inversion):
+        if vend <= 100:
+            vend = 101
+        if vend >= 910:
+            vend = 909
+        if inversion:
+            pos_prozent = (910 - pos) / (910 - vend) * 100
+        else: 
+            pos_prozent = (pos - 100) / (vend - 100) * 100
+        if pos_prozent < 0:
+            pos_prozent = 0
+        elif pos_prozent > 100:
+            pos_prozent = 100
+        return round(pos_prozent / 5) * 5  # 5% Steps
 
     def new_vend(self):
         MotorAPI.set_vend(self.spin_vend_left.value(), self.spin_vend_right.value())
+        RedisAPI.set_value("hmi_vend_soll", MotorAPI.get_vend()[0])
 
     def reset_errors(self):
         MotorAPI.reset_errors()
@@ -139,7 +215,21 @@ class SliderApp(QMainWindow):
     def reset_state(self):
         MotorAPI.reset_state()
 
+    def ui_control(self):
+        global ui_control
+        if not ui_control:
+            self.btn_ui_control.setText("UI Control ON")
+            ui_control = True
+            self.slider_left.setEnabled(True)
+            self.slider_right.setEnabled(True)
+        else:
+            self.btn_ui_control.setText("UI Control OFF")
+            ui_control = False
+            self.slider_left.setEnabled(False)
+            self.slider_right.setEnabled(False)
+
 if __name__ == '__main__':
+    ui_control = False  # Global variable to control UI state
     app = QApplication(sys.argv)
     window = SliderApp()
     window.show()
