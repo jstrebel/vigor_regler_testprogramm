@@ -266,9 +266,9 @@ def get_state():
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -297,13 +297,14 @@ def get_state():
         if IOs.get_button(B3):
             state = "MANUAL_L"
         if IOs.get_button(B4):
-            state = "EDGE_L"
+            enable_geo = not enable_geo
+            debounce_flag = True
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -335,13 +336,14 @@ def get_state():
         if IOs.get_button(B3):
             state = "MANUAL_L"
         if IOs.get_button(B4):
-            state = "EDGE_R"
+            enable_geo = not enable_geo
+            debounce_flag = True
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
