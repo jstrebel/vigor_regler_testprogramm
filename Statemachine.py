@@ -376,4 +376,4 @@ def get_state():
         enable_geo = True
         pause_bool = False
         cnt_vend = 0
-    return state, pause_bool
+    return state, enable_geo
