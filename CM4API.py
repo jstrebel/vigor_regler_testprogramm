@@ -31,5 +31,8 @@ def get_gps():
         gps = msg
     return "GPS: " + gps
 
-def send_hb_state(hb_state):
+def send_hb_state(hb_state, paused):
+    if paused and hb_state == "EDGE_L" or hb_state == "EDGE_R":
+        hb_state += "_P"
+        
     CAN_Wrapper.write_can_str(reg_hb_status, hb_state)

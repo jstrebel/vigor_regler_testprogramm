@@ -3,21 +3,33 @@
 
 from gpiozero import DigitalOutputDevice
 from gpiozero import DigitalInputDevice
+import time
 
-ti1_s0 = DigitalOutputDevice(0) # pin 27
-ti1_s1 = DigitalOutputDevice(1) # pin 28
-ti1_s2 = DigitalOutputDevice(4) # pin 7
-ti1_a = DigitalInputDevice(5) # pin 29
+gpio_init_done = False
 
-ti2_s0 = DigitalOutputDevice(6) # pin 31
-ti2_s1 = DigitalOutputDevice(23) # pin 16
-ti2_s2 = DigitalOutputDevice(22) # pin 15
-ti2_a = DigitalInputDevice(12) # pin 32
+while not gpio_init_done:
+    try:
+        ti1_s0 = DigitalOutputDevice(0) # pin 27
+        ti1_s1 = DigitalOutputDevice(1) # pin 28
+        ti1_s2 = DigitalOutputDevice(4) # pin 7
+        ti1_a = DigitalInputDevice(5) # pin 29
 
-led_s0 = DigitalOutputDevice(13) # pin 33
-led_s1 = DigitalOutputDevice(17) # pin 11
-led_s2 = DigitalOutputDevice(18) # pin 12
-led_a = DigitalOutputDevice(27) # pin 13
+        ti2_s0 = DigitalOutputDevice(6) # pin 31
+        ti2_s1 = DigitalOutputDevice(23) # pin 16
+        ti2_s2 = DigitalOutputDevice(22) # pin 15
+        ti2_a = DigitalInputDevice(12) # pin 32
+
+        led_s0 = DigitalOutputDevice(13) # pin 33
+        led_s1 = DigitalOutputDevice(17) # pin 11
+        led_s2 = DigitalOutputDevice(18) # pin 12
+        led_a = DigitalOutputDevice(27) # pin 13
+
+        gpio_init_done = True
+    except Exception as e:
+        print("GPIO Init failed, retrying in 1 second...", e)
+        time.sleep(1)
+
+
 
 def set_mux_ti1(i):
     if not 0 <= i <= 7:

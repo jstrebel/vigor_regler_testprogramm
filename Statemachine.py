@@ -58,14 +58,14 @@ def set_vend_curr(vend):
     if 100 <= vend <= 910:
         vend_curr = vend
     else:
-        raise ValueError("Vend must be between 100 and 910")
+        vend_curr = 910  # Default to max if out of range
     
 def set_inverted(invert):
     global inverted
     if isinstance(invert, bool):
         inverted = invert
     else:
-        raise ValueError("Inversion must be a boolean value")
+        inverted = False  # Default to False if not a boolean
 
 def get_state():
     global state
@@ -266,9 +266,9 @@ def get_state():
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -297,13 +297,14 @@ def get_state():
         if IOs.get_button(B3):
             state = "MANUAL_L"
         if IOs.get_button(B4):
-            state = "EDGE_L"
+            enable_geo = not enable_geo
+            debounce_flag = True
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -335,13 +336,14 @@ def get_state():
         if IOs.get_button(B3):
             state = "MANUAL_L"
         if IOs.get_button(B4):
-            state = "EDGE_R"
+            enable_geo = not enable_geo
+            debounce_flag = True
         if IOs.get_button(B5):
             state = "CALIB"
         if IOs.get_button(B6):
-            enable_geo = True
+            pass
         if IOs.get_button(B7):
-            enable_geo = False
+            pass
         if IOs.get_button(B8):
             pass
         if IOs.get_button(B9):
@@ -374,4 +376,4 @@ def get_state():
         enable_geo = True
         pause_bool = False
         cnt_vend = 0
-    return state
+    return state, enable_geo
